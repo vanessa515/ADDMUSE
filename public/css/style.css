@@ -1,0 +1,55 @@
+body{
+    background-color: beige;
+}
+.custom-audio-player {
+    display: flex;
+    align-items: center;
+    background-color: black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.play-pause {
+    margin-right: 10px;
+    color: white; /* Mejora la visibilidad del texto */
+}
+.seek-bar {
+-webkit-appearance: none; /* Elimina el estilo predeterminado en navegadores WebKit */
+width: 100%; /* Ocupa el 100% del espacio disponible */
+height: 5px; /* Altura de la barra */
+background: red; /* Color de fondo de la barra (no reproducida) */
+border-radius: 5px; /* Bordes redondeados */
+position: relative; /* Necesario para el pseudo-elemento */
+overflow: hidden; /* Oculta el contenido que sobresale */
+}
+
+.seek-bar::-webkit-slider-thumb {
+-webkit-appearance: none; /* Elimina el estilo predeterminado en WebKit */
+appearance: none; /* Elimina el estilo predeterminado en otros navegadores */
+width: 15px; /* Ancho del "thumb" (el círculo que arrastras) */
+height: 15px; /* Altura del "thumb" */
+background: green; /* Color del "thumb" */
+}
+
+
+
+/* Pseudo-elemento para mostrar la parte verde (reproducida) */
+.seek-bar::before {
+content: '';
+display: block;
+height: 100%;
+background: green; /* Color de la parte reproducida */
+position: absolute;
+top: 0;
+left: 0;
+width: 0; /* Inicialmente en 0 */
+transition: width 0.1s; /* Suaviza el cambio de ancho */
+z-index: -1; /* Asegúrate de que se dibuje detrás del "thumb" */
+}
+
+/* Estilo para el texto del tiempo */
+.current-time {
+    color: white;
+    margin-left: 10px;
+}
