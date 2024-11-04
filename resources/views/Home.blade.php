@@ -6,9 +6,8 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <title>Página Principal</title>
     <style>
-        /* Estilos del modal */
         .modal {
-            display: none; /* Oculto por defecto */
+            display: none; 
             position: fixed; 
             z-index: 1; 
             left: 0;
@@ -63,7 +62,6 @@
     <p>{{ $cancion->duracion }}</p>
     <p>{{ $cancion->fecha }}</p>
 
-    <!-- Botón para abrir el modal -->
     <button onclick="openModal('{{ $cancion->pk_cancion }}')">Agregar a Favoritas</button>
     <hr>
 @endforeach
@@ -76,7 +74,7 @@
         <form id="favoritaForm" action="{{ route('favorita.store') }}" method="POST">
             @csrf
             <input type="hidden" name="fk_cancion" id="fk_cancion">
-            <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}"> <!-- Campo oculto para el ID del usuario -->
+            <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}"> 
             <label for="fk_album">Álbum:</label>
             <select name="fk_album" id="fk_album" required>
                 @foreach($albumes as $album)
@@ -96,15 +94,15 @@
 
 <script>
     function openModal(cancionId) {
-        document.getElementById("fk_cancion").value = cancionId; // Establecer el ID de la canción seleccionada
-        document.getElementById("albumModal").style.display = "block"; // Mostrar el modal
+        document.getElementById("fk_cancion").value = cancionId; 
+        document.getElementById("albumModal").style.display = "block"; 
     }
 
     function closeModal() {
-        document.getElementById("albumModal").style.display = "none"; // Ocultar el modal
+        document.getElementById("albumModal").style.display = "none"; 
     }
 
-    // Cerrar el modal si se hace clic fuera de él
+   
     window.onclick = function(event) {
         if (event.target == document.getElementById("albumModal")) {
             closeModal();
