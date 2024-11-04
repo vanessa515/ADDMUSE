@@ -62,7 +62,10 @@
                       <li>
                       </li>
                       <li>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Cerrar sesion</a>
+                          <form action="{{ route('logout') }}" method="POST" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                              @csrf
+                              <button type="submit">Cerrar sesión</button>
+                          </form>
                       </li>
                     </ul>
                   </div>
