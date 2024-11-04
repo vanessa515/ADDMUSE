@@ -8,7 +8,7 @@
 <body>
 
 <h1>Perfil</h1><br>
-
+@include('sidebar')
 @if($usuarios->isNotEmpty())
 
     @php
@@ -47,6 +47,6 @@
 @else
     <p>No hay información disponible.</p>
 @endif
-
+@include('fotter')
 </body>
 </html>
