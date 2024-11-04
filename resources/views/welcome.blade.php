@@ -7,7 +7,7 @@
 </head>
 <body>
    
-<h1>Inicio de sesión</h1>
+<h1>Registrate</h1>
 
 <form action="{{ route('register.store') }}" method="POST">
 

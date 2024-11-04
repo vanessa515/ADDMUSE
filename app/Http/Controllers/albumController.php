@@ -30,7 +30,7 @@ class albumController extends Controller
         $album->fk_categoria = $validate['fk_categoria'];
         $album -> save();
 
-        return redirect()->back()->with('success', 'Canción registrada exitosamente');
+        return redirect()->back()->with('success', 'Album registrada exitosamente');
         
     }
 
@@ -41,6 +41,15 @@ class albumController extends Controller
         ->get();
             //  dd($categorias);
     return view('registroAlbum', compact('categorias')); // Pasamos los datos a la vista
+}
+
+public function showalbum()
+{
+    $albumes = DB::table('albumes')
+        ->select('pk_album', 'nombre_album', 'imagen')
+        ->get();
+            //   dd($albumes);
+    return view('vistaAlbum', compact('albumes')); // Pasamos los datos a la vista
 }
 
 

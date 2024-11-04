@@ -85,6 +85,16 @@ function obtenerDuracion() {
         @endforeach
     </select>
 
+    <label for="fk_album">Albumes:</label><br>
+    <select name="fk_album" id="fk_album" class="form-control" required>
+        <option value="" disabled selected>Selecciona una opción</option>
+        @foreach($albumes as $album)
+            <option value="{{ $album->pk_album }}">
+                {{ $album->nombre_album }} 
+            </option>
+        @endforeach
+    </select>
+
     <button type="submit">Registrar Canción</button>
 </form>
 

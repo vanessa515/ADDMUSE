@@ -19,6 +19,7 @@ class regcan extends Controller
             'duracion' => 'required|string|max:45', 
           
             'fk_categoria' => 'required|int',
+            'fk_album' => 'required|int',
         ]);
 
         // Procesar el archivo de imagen
@@ -41,7 +42,7 @@ class regcan extends Controller
         //NOTA:
         //nombre = substr($nombreMusica, 0, 45); [ese fragmento de codigo nos permite truncar(acortar el nombre del archivo original)]
         
-        $canciones->nombre = substr($nombreMusica, 0, 45);
+        $canciones->nombre =  $validated['nombre'];
         $canciones->imagen = $imagenPath;
         $canciones->musica = $musicaPath; 
         $canciones->duracion = $validated['duracion'];
@@ -49,6 +50,7 @@ class regcan extends Controller
         $canciones->estatus = 1; 
         $canciones->fk_categoria = $validated['fk_categoria'];
         $canciones->fk_usuario = auth()->id(); // Asigna el usuario autenticado
+        $canciones->fk_album = $validated['fk_album'];
         $canciones->save(); 
 
         // Redirigir o mostrar un mensaje de éxito
@@ -62,27 +64,37 @@ class regcan extends Controller
         $categorias = DB::table('categorias')
             ->select('pk_categorias', 'nombre_cat') 
             ->get();
-
-        return view('registroCanciones', compact('categorias')); // Pasamos los datos a la vista
+            $albumes = DB::table('albumes')
+            ->select('pk_album', 'nombre_album', 'imagen')
+            ->get();
+        return view('registroCanciones', compact('categorias', 'albumes')); // Pasamos los datos a la vista
     }
 
     public function showcan()
     {
         $canciones = DB::table('canciones')
+        -> join('albumes', 'canciones.fk_album', '=', 'albumes.pk_album')
             ->select(
    'pk_cancion',
             'nombre',
-            'imagen',
+            'canciones.imagen',
             'musica',
             'duracion',
-            'fecha'
+            'fecha',
+            'fk_album',
+            'albumes.nombre_album',
             ) 
             ->get();
+            
+        $albumes = DB::table('albumes')
+        ->select('pk_album', 'nombre_album')
+        ->get();
 
-        return view('home', compact('canciones')); // Pasamos los datos a la vista
+        return view('home', compact('canciones', 'albumes')); // Pasamos los datos a la vista
     }
 
     
+ 
 }
 
 

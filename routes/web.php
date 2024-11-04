@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\registrousuario;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\favoritaController;
 use App\Http\Controllers\logincontroller;
 use App\Http\Controllers\perfilController;
 use App\Http\Controllers\regcan;
@@ -44,9 +45,11 @@ Route::get('/registrocan', function () {
     return view('registroCanciones');
 })->name('register.form');
 
+
 Route::post('/registrocan', [regcan::class, 'store'])->name('regcan.store');
 Route::get('/registrocan', [regcan::class, 'showcat'])->name('register.form');
 Route::get('/home', [regcan::class, 'showcan'])->name('home');
+// Route::get('/registrocan', [regcan::class, 'showalbum'])->name('albumshow');
 
 Route::get('/perfil', [perfilController::class, 'showperfil'])->name('perfil');
 //////
@@ -54,6 +57,11 @@ Route::get('/perfil', [perfilController::class, 'showperfil'])->name('perfil');
 
 Route::get('/registroAlbum', [albumController::class, 'showcat'])->name('album');
 Route::post('/registroAlbum', [albumController::class, 'store'])->name('album.store');
+
+Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->name('albumshow');
+
+Route::post('/favorita/store', [favoritaController::class, 'store'])->name('favorita.store');
+
 
 
 
