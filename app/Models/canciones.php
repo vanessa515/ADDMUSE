@@ -23,7 +23,8 @@ class canciones extends Model
     'fecha_lanzamiento',
     'estatus',
     'fk_categoria',
-    'fk_usuario'
+    'fk_usuario',
+    'fk_album',
 ];
 
     

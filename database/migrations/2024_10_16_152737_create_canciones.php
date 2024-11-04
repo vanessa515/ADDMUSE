@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('estatus', 45);
             $table->unsignedBigInteger('fk_categoria');
             $table->unsignedBigInteger('fk_usuario');
+            $table->unsignedBigInteger('fk_album');
         });
     }
 
