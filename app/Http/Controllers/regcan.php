@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Canciones;
+use App\Models\usuario;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB; // Importar la clase DB
 use Illuminate\Support\Facades\Auth; 
@@ -88,9 +89,12 @@ class regcan extends Controller
             
         $albumes = DB::table('albumes')
         ->select('pk_album', 'nombre_album')
+        ->where('nombre_album', '=', 'favoritos')
         ->get();
 
-        return view('home', compact('canciones', 'albumes')); // Pasamos los datos a la vista
+        $usuario=new usuario();
+        $usuarios = $usuario->showperfil();
+        return view('home', compact('canciones', 'albumes', 'usuarios')); // Pasamos los datos a la vista
     }
 
     

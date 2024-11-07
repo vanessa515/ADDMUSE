@@ -43,15 +43,34 @@
                       <img class="w-8 h-8 rounded-full" src="/img/perfil.jpg" alt="user photo">
                     </button>
                   </div>
+                  
+
+                  @if($usuarios->isNotEmpty())
+
+    @php
+        $nombreActual = null; 
+    @endphp
+
+   
+@foreach($usuarios as $usuario)
+        @if($nombreActual !== $usuario->Nombre_usuario)
+            @php
+                $nombreActual = $usuario->Nombre_usuario;
+            @endphp
                   <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
                     <div class="px-4 py-3" role="none">
                       <p class="text-sm text-gray-900" role="none">
-                        El chuerk
+                      {{ $usuario->Nombre_usuario }}
                       </p>
                       <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                        srekk@gmail.com
+                      {{ $usuario->Correo_electronico }}
                       </p>
                     </div>
+        
+                    @endif
+                  
+                    @endforeach
+                    @endif
                     <ul class="py-1" role="none">
                       <li>
                         <a href="perfil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Perfil</a>
@@ -89,3 +108,4 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </html>
+

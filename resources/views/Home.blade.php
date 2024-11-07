@@ -28,6 +28,8 @@
 </head>
 <body>
 
+@include('sidebar')
+
 <form action="{{ route('logout') }}" method="POST">
     @csrf
     <button type="submit">Cerrar sesión</button>
@@ -56,6 +58,7 @@
 
 @foreach($canciones as $cancion)
 <h2>Del álbum: {{$cancion->nombre_album}}</h2>
+<img style="max-width: 150px;" src="{{ asset('storage/' . $cancion->imagen) }}" alt="imagen album"><br>
     <strong>{{ $cancion->nombre }}</strong><br>
     <img src="{{ asset('storage/' . $cancion->imagen) }}" alt="Imagen de {{ $cancion->nombre }}" style="max-width: 150px;"><br>
     <audio class="audio" src="{{ asset('storage/' . $cancion->musica) }}" controls loop preload="metadata"></audio>
@@ -70,7 +73,7 @@
 <div id="albumModal" class="modal">
     <div class="modal-content">
         <span onclick="closeModal()" style="cursor:pointer;">&times; Cerrar</span>
-        <h2>Selecciona un Álbum</h2>
+        <h2>Añadir a favoritos</h2>
         <form id="favoritaForm" action="{{ route('favorita.store') }}" method="POST">
             @csrf
             <input type="hidden" name="fk_cancion" id="fk_cancion">
@@ -93,6 +96,7 @@
 <a href="vistaAlbum">Álbumes</a>
 
 <script>
+ 
     function openModal(cancionId) {
         document.getElementById("fk_cancion").value = cancionId; 
         document.getElementById("albumModal").style.display = "block"; 
@@ -109,6 +113,6 @@
         }
     }
 </script>
-
+@include('fotter')
 </body>
 </html>

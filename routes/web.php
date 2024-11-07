@@ -10,6 +10,7 @@ use App\Http\Controllers\logincontroller;
 use App\Http\Controllers\perfilController;
 use App\Http\Controllers\regcan;
 use App\Http\Controllers\regcat;
+use App\Http\Controllers\usuarioController;
 
 Route::get('/login', function() {
     return view('login'); 
@@ -37,28 +38,30 @@ Route::get('/home', function () {
 
 Route::get('/registrocat', function () {
     return view('registroCategoria');
-})->name('register.form');
+})->middleware('auth')->name('registrocat');;
 
 Route::post('/registrocat', [regcat::class, 'store'])->name('regcat.store');
 
 Route::get('/registrocan', function () {
     return view('registroCanciones');
-})->name('register.form');
+})->middleware('auth')->name('registrocan');
 
 
 Route::post('/registrocan', [regcan::class, 'store'])->name('regcan.store');
-Route::get('/registrocan', [regcan::class, 'showcat'])->name('register.form');
-Route::get('/home', [regcan::class, 'showcan'])->name('home');
+Route::get('/registrocan', [regcan::class, 'showcat'])->middleware('auth')->name('registrocan');
+Route::get('/home', [regcan::class, 'showcan'])->middleware('auth')->name('home');
 // Route::get('/registrocan', [regcan::class, 'showalbum'])->name('albumshow');
 
-Route::get('/perfil', [perfilController::class, 'showperfil'])->name('perfil');
+Route::get('/perfil', [perfilController::class, 'showperfil'])->middleware('auth')->name('perfil');;
+
+
 //////
 
 
-Route::get('/registroAlbum', [albumController::class, 'showcat'])->name('album');
-Route::post('/registroAlbum', [albumController::class, 'store'])->name('album.store');
+Route::get('/registroAlbum', [albumController::class, 'showcat'])->middleware('auth')->name('registroAlbum');
+Route::post('/registroAlbum', [albumController::class, 'store'])->middleware('auth')->name('album.store');
 
-Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->name('albumshow');
+Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->name('albumshow')->middleware('auth')->name('/vistaAlbum');;
 
 Route::post('/favorita/store', [favoritaController::class, 'store'])->name('favorita.store');
 

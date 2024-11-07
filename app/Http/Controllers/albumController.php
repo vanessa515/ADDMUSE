@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\album;
 use App\Models\categorias;
+use App\Models\usuario;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -39,6 +40,8 @@ class albumController extends Controller
     $categorias = DB::table('categorias')
         ->select('pk_categorias', 'nombre_cat')
         ->get();
+        $usuario=new usuario();
+        $usuarios = $usuario->showperfil();
             //  dd($categorias);
     return view('registroAlbum', compact('categorias')); // Pasamos los datos a la vista
 }
@@ -47,8 +50,11 @@ public function showalbum()
 {
     $albumes = DB::table('albumes')
         ->select('pk_album', 'nombre_album', 'imagen')
+        
         ->get();
-            //   dd($albumes);
+        $usuario=new usuario();
+        $usuarios = $usuario->showperfil();
+            //  dd($albumes);
     return view('vistaAlbum', compact('albumes')); // Pasamos los datos a la vista
 }
 
