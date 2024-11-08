@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('user_name', 45);
             $table->string('correo', 45)->unique();
             $table->string('contraseña', 100);
+            $table->string('foto', 90)->nullable();
             $table->string('estatus', 45);
             $table->timestamps();
         });

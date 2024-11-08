@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\favoritaController;
 use App\Http\Controllers\logincontroller;
 use App\Http\Controllers\perfilController;
+use App\Http\Controllers\PerfilEditController;
 use App\Http\Controllers\regcan;
 use App\Http\Controllers\regcat;
 use App\Http\Controllers\usuarioController;
@@ -65,7 +66,12 @@ Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->name('albumsho
 
 Route::post('/favorita/store', [favoritaController::class, 'store'])->name('favorita.store');
 
+///editar
 
+Route::middleware('auth')->group(function () {
+    
+    Route::put('perfil', [perfilController::class, 'update'])->name('perfil.update');
+});
 
 
 

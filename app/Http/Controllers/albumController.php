@@ -19,6 +19,7 @@ class albumController extends Controller
             'nombre_album' => 'required|string|max:250',
             'imagen' => 'required|file|mimes:jpg,jpeg,png|max:2048', 
             'fk_categoria' => 'required|int',
+            'fk_usuario' => 'required|int',
         ]);
         if ($request->hasFile('imagen')) {
             $imagenPath = $request->file('imagen')->store('imagenes', 'public');
@@ -29,6 +30,7 @@ class albumController extends Controller
         $album->imagen = $imagenPath; 
         $album->estatus = 1;
         $album->fk_categoria = $validate['fk_categoria'];
+        $album -> fk_usuario = auth()->id();
         $album -> save();
 
         return redirect()->back()->with('success', 'Album registrada exitosamente');

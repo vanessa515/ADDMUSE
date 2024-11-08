@@ -23,7 +23,7 @@
                   <a class="text-md font-bold hover:text-sky-800" href="">Sobre Nosotros</a>
                 </div>
                 <div class="md:mr-[5rem] mr-2">
-                  <a class="text-md font-bold hover:text-sky-800" href="">Musica</a>
+                  <a class="text-md font-bold hover:text-sky-800" href="vistaAlbum">Musica</a>
                 </div>
                 <div class="md:flex hidden mr-[2rem]">
                   <div class="relative">
@@ -40,19 +40,21 @@
                   <div>
                     <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                       <span class="sr-only">Menu de usuario</span>
-                      <img class="w-8 h-8 rounded-full" src="/img/perfil.jpg" alt="user photo">
-                    </button>
-                  </div>
-                  
-
+                      
                   @if($usuarios->isNotEmpty())
 
-    @php
-        $nombreActual = null; 
-    @endphp
+@php
+    $nombreActual = null; 
+@endphp
 
-   
+
 @foreach($usuarios as $usuario)
+                      <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . $usuario->imagen_perfil) }}" alt="user photo">
+                    </button>
+                  </div>
+
+                  
+
         @if($nombreActual !== $usuario->Nombre_usuario)
             @php
                 $nombreActual = $usuario->Nombre_usuario;

@@ -14,14 +14,15 @@ class usuario  extends Authenticatable
     protected $table = 'usuarios';
 
     protected $primaryKey = 'pk_usuarios';
-    protected $fillable = ['user_name','correo','contraseña','estatus'];
+    protected $fillable = ['user_name','correo','contraseña','foto','estatus'];
 
+    
 public function showperfil(){
     $userId = Auth::id(); // Obtiene el ID del usuario autenticado
     $usuarios = DB::table('usuarios AS u')
     ->select(
        'u.user_name AS Nombre_usuario',
-        'u.correo AS Correo_electronico', 
+        'u.correo AS Correo_electronico', 'u.foto AS imagen_perfil'
     )
     ->where('u.pk_usuarios', $userId)
     ->get();

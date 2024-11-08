@@ -56,17 +56,23 @@
 
 <h1>Música</h1>
 
-@foreach($canciones as $cancion)
-<h2>Del álbum: {{$cancion->nombre_album}}</h2>
-<img style="max-width: 150px;" src="{{ asset('storage/' . $cancion->imagen) }}" alt="imagen album"><br>
-    <strong>{{ $cancion->nombre }}</strong><br>
-    <img src="{{ asset('storage/' . $cancion->imagen) }}" alt="Imagen de {{ $cancion->nombre }}" style="max-width: 150px;"><br>
-    <audio class="audio" src="{{ asset('storage/' . $cancion->musica) }}" controls loop preload="metadata"></audio>
-    <p>{{ $cancion->duracion }}</p>
-    <p>{{ $cancion->fecha }}</p>
+@foreach($canciones as $nombreAlbum => $cancionesAlbum)
+    <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
+    
+    @if($cancionesAlbum->first()->imagen)
+        <img style="max-width: 150px;" src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen album"><br>
+    @endif
+    
+    <!-- Reproductor de música para este álbum -->
+    <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
 
-    <button onclick="openModal('{{ $cancion->pk_cancion }}')">Agregar a Favoritas</button>
-    <hr>
+    @foreach($cancionesAlbum as $cancion)
+        <strong>{{ $cancion->nombre }}</strong><br>
+        <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button>
+        <p>{{ $cancion->fecha }}</p>
+        <button onclick="openModal('{{ $cancion->pk_cancion }}')">Agregar a Favoritas</button>
+        <hr>
+    @endforeach
 @endforeach
 
 <!-- Modal -->
@@ -89,14 +95,21 @@
         </form>
     </div>
 </div>
+
 <a href="registrocat">Registrar categoría</a><br>
 <a href="registrocan">Registrar canciones</a><br>
-<a href="perfil">Perfil</a><br>
 <a href="registroAlbum">Registrar Álbum</a><br>
-<a href="vistaAlbum">Álbumes</a>
+
+
+
 
 <script>
- 
+    function cambiarCancion(reproductorId, urlMusica) {
+        const reproductor = document.getElementById(reproductorId);
+        reproductor.src = urlMusica;
+        reproductor.play();
+    }
+
     function openModal(cancionId) {
         document.getElementById("fk_cancion").value = cancionId; 
         document.getElementById("albumModal").style.display = "block"; 
@@ -106,13 +119,13 @@
         document.getElementById("albumModal").style.display = "none"; 
     }
 
-   
     window.onclick = function(event) {
         if (event.target == document.getElementById("albumModal")) {
             closeModal();
         }
     }
 </script>
+
 @include('fotter')
 </body>
 </html>

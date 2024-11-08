@@ -83,15 +83,17 @@ class regcan extends Controller
             'duracion',
             'fecha',
             'fk_album',
-            'albumes.nombre_album',
-            ) 
-            ->get();
+            'albumes.nombre_album'
+            )
+            ->get()
+            -> groupBy('nombre_album');
             
-        $albumes = DB::table('albumes')
+        
+ $albumes = DB::table('albumes')
         ->select('pk_album', 'nombre_album')
-        ->where('nombre_album', '=', 'favoritos')
+        ->where('fk_usuario', Auth::id())
         ->get();
-
+        
         $usuario=new usuario();
         $usuarios = $usuario->showperfil();
         return view('home', compact('canciones', 'albumes', 'usuarios')); // Pasamos los datos a la vista
