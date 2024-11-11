@@ -6,7 +6,7 @@
     <title>Albumes</title>
 </head>
 <body>
-
+@include('sidebar')
 <h1>Albumes</h1>
 
 @foreach($albumes as $album)
@@ -16,6 +16,6 @@
 
 
 @endforeach
-
+@include('fotter')
 </body>
 </html>

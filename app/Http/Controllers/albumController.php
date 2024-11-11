@@ -54,10 +54,11 @@ public function showalbum()
         ->select('pk_album', 'nombre_album', 'imagen')
         
         ->get();
+     
         $usuario=new usuario();
         $usuarios = $usuario->showperfil();
-            //  dd($albumes);
-    return view('vistaAlbum', compact('albumes')); // Pasamos los datos a la vista
+            //   dd($usuarios);
+    return view('vistaAlbum', compact('albumes', 'usuarios')); // Pasamos los datos a la vista
 }
 
 

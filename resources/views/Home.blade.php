@@ -68,7 +68,7 @@
 
     @foreach($cancionesAlbum as $cancion)
         <strong>{{ $cancion->nombre }}</strong><br>
-        <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button>
+        <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
         <p>{{ $cancion->fecha }}</p>
         <button onclick="openModal('{{ $cancion->pk_cancion }}')">Agregar a Favoritas</button>
         <hr>
