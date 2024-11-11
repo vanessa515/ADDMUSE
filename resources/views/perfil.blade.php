@@ -58,7 +58,6 @@
 </head>
 <body>
 @include('sidebar')
-<h1>Perfil</h1><br>
 
 
 @if($usuarios->isNotEmpty())
@@ -71,15 +70,54 @@
             @php
                 $nombreActual = $usuario->Nombre_usuario;
             @endphp
-
-            <h2>Nombre de Usuario:</h2>
-            <p>{{ $usuario->Nombre_usuario }}</p>
-            <button id="editBtn">Editar Nombre</button>
-            <h2>Correo Electrónico: </h2>
-            <p>{{ $usuario->Correo_electronico }}</p>
-            
-          
-
+    <div class="p-4">
+        <div class="border-2 border-gray-200 border-dashed rounded-lg mt-14">
+            <!-- INICIO CONTENEDOR -->
+            <div class="flex justify-center mt-5">
+                <div class="flex flex-col">
+                    <div class="bg-[#007AB7] p-10 justify-center w-[70rem]">
+                        <div class="flex justify-start">
+                            <span class="hover:bg-red-500">Cambiar foto</span>
+                        </div>
+                        <div class="flex pl-5 mt-10">
+                            <div class="flex">
+                                <div class="flex w-[10rem] h-[10rem]">
+                                    <img class="rounded-full" src="{{ asset('storage/' . $usuario->imagen_perfil) }}" alt="">
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-col">
+                                        <p class="text-[#FDFEFF] text-2xl font-bold pl-10">{{ $usuario->Nombre_usuario }}</p>
+                                        <div class="mt-3">
+                                            <span class="pl-10 text-[#FDFEFF] text-base font-bold">Seguidores <span>0</span></span>
+                                            <span class="pl-3 text-[#FDFEFF] text-base font-bold">Siguiendo <span>0</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="editBtn">Editar Nombre</button>
+                        </div>
+                    </div>
+                    <div class=" flex">
+                        <a class="px-2" href="">
+                            <div class="border-t-4 border-[#007AB7]">
+                                <span class="font-semibold text-base text-[#007AB7]">Perfil</span>
+                            </div>
+                        </a>    
+                        <a class="px-2" href="">
+                            <div class="border-t-4 border-[#ffffff] hover:border-[#007AB7]">
+                                <span class="font-semibold text-base hover:text-[#007AB7]">Favoritos</span>
+                            </div>
+                        </a>
+                        <a class="px-2" href="">
+                            <div class="border-t-4 border-[#ffffff] hover:border-[#007AB7]">
+                                <span class="font-semibold text-base hover:text-[#007AB7]">Subidas</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
             <h1>Favoritas</h1><br>
 
             @foreach($favoritas as $favorita)
@@ -105,7 +143,9 @@
 @else
     <p>No hay información disponible.</p>
 @endif
-
+        <!-- FIN DEL CONTENEDOR PADDING -->
+    </div>
+</div>
 @include('fotter')
 
 
@@ -125,7 +165,6 @@
         </form>
     </div>
 </div>
-
 <script>
    
     var modal = document.getElementById("editModal");
