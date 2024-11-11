@@ -9,7 +9,7 @@
    
 <h1>Registrate</h1>
 
-<form action="{{ route('register.store') }}" method="POST">
+<form action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
 
 @csrf
 
@@ -21,6 +21,8 @@
 
    <input type="password" name="contraseña" placeholder="Contraseña" required><br>
 
+   <label for="foto">Subir foto</label><br>
+   <input type="file" name="foto" accept="image/*" placeholder="Foto"><br>
    
    <input type="password" name="contraseña_confirmation" placeholder="Confirmacion de contraseña" required><br>
 

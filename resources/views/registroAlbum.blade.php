@@ -19,10 +19,6 @@
 <label for="">Imagen</label><br>
 <input type="file" name="imagen" placeholder="nombre" required><br>
 <select name="fk_categoria" id="fk_categoria" class="form-control" required><br>
-
-
-
-
         <option value="" disabled selected>Selecciona una opción</option>
         @foreach($categorias as $categoria)
             <option value="{{ $categoria->pk_categorias }}">
@@ -30,6 +26,7 @@
             </option>
         @endforeach
     </select> <br>
+    <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}"> 
     <button type="submit" >Enviar</button>
 
 </form>

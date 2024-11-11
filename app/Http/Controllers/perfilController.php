@@ -14,7 +14,7 @@ class perfilController extends Controller
 {
 
     public function showperfil(){
-        $userId = Auth::id(); // Obtiene el ID del usuario autenticado
+        $userId = Auth::id (); // Obtiene el ID del usuario autenticado
         $usuarios = DB::table('usuarios AS u')
         ->select(
            'u.user_name AS Nombre_usuario',
@@ -23,20 +23,43 @@ class perfilController extends Controller
             'c.imagen AS imagen',
             'c.musica', 
             'c.duracion', 
-            'c.fecha', 
+            'c.fecha',
+           'u.foto AS imagen_perfil'
         )
         ->leftjoin ('canciones AS c', 'u.pk_usuarios', '=', 'c.fk_usuario' )
         ->where('u.pk_usuarios', $userId) 
         ->get();
+
         $favoritas = DB::table('favoritas')
         ->join('usuarios', 'favoritas.fk_usuario', '=', 'usuarios.pk_usuarios')
         ->join('canciones', 'favoritas.fk_cancion', '=', 'canciones.pk_cancion')
         ->join('albumes', 'favoritas.fk_album', '=', 'albumes.pk_album')
-    ->where('albumes.nombre_album', '=', 'Favoritos')->where('usuarios.pk_usuarios', '=', Auth::id())
+        ->where('usuarios.pk_usuarios', '=', Auth::id())
         ->select('albumes.nombre_album', 'canciones.nombre', 'canciones.imagen', 'canciones.musica')
         ->get();
-
-        return view('perfil', compact('usuarios',  'favoritas'));
+        
+      
+         $info = Auth::user(); // Obtener el perfil del usuario autenticado
+        //  dd($favoritas);
+        return view('perfil', compact('usuarios',  'favoritas', 'info'));
     }
+////////////////////
 
+public function update(Request $request)
+{
+    try {
+        $usuario = Auth::user(); // Obtener el usuario autenticado
+
+        $validatedData = $request->validate([
+            'user_name' => 'required|string|max:250',
+        ]);
+
+        $usuario->user_name = $validatedData['user_name'];
+        $usuario->save();
+
+        return redirect()->back()->with('success', 'Datos actualizados correctamente.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Error al ejecutar la consulta: ' . $e->getMessage());
+    }
+}
 }

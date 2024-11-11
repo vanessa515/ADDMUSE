@@ -19,6 +19,7 @@ class album extends Model
     'imagen',
     'estatus',
     'fk_categoria',
+    'fk_usuario'
     
 ];
 
