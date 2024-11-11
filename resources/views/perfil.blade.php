@@ -58,6 +58,7 @@
 </head>
 <body>
 @include('sidebar')
+
 <h1>Perfil</h1><br>
 
 
@@ -106,7 +107,7 @@
     <p>No hay información disponible.</p>
 @endif
 
-@include('fotter')
+
 
 
 <div id="editModal" class="modal">
@@ -125,6 +126,8 @@
         </form>
     </div>
 </div>
+
+@include('fotter')
 
 <script>
    
