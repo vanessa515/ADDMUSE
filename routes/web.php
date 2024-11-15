@@ -62,7 +62,12 @@ Route::get('/perfil', [perfilController::class, 'showperfil'])->middleware('auth
 Route::get('/registroAlbum', [albumController::class, 'showcat'])->middleware('auth')->name('registroAlbum');
 Route::post('/registroAlbum', [albumController::class, 'store'])->middleware('auth')->name('album.store');
 
-Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->name('albumshow')->middleware('auth')->name('/vistaAlbum');;
+Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->name('albumshow')->middleware('auth')->name('/vistaAlbum');
+ Route::middleware('auth')->group(function () {
+    
+     Route::put('/vistaAlbum', [albumController::class, 'update'])->name('cancion.update');
+     Route::post('/vistaAlbum', [albumController::class, 'delete'])->name('cancion.delete');
+ });
 
 Route::post('/favorita/store', [favoritaController::class, 'store'])->name('favorita.store');
 

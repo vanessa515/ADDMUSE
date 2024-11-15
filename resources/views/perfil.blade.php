@@ -15,7 +15,6 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0,0,0);
             background-color: rgba(0,0,0,0.4);
             padding-top: 60px;
         }
@@ -42,7 +41,6 @@
             cursor: pointer;
         }
 
-     
         button {
             padding: 10px 15px;
             background-color: #4CAF50;
@@ -59,68 +57,60 @@
 <body>
 @include('sidebar')
 
-<h1>Perfil</h1><br>
-
+<h1>Perfil</h1><br><br><br>
 
 @if($usuarios->isNotEmpty())
     @php
-        $nombreActual = null; 
+        $usuario = $usuarios->first(); // Obtén solo el primer usuario
     @endphp
+    <p>Cambiar foto de perfil</p>
+    <img style="width: 20%; height: auto;" src="{{ asset('storage/' . $usuario->imagen_perfil) }}" alt="user photo">
 
-    @foreach($usuarios as $usuario)
-        @if($nombreActual !== $usuario->Nombre_usuario)
-            @php
-                $nombreActual = $usuario->Nombre_usuario;
-            @endphp
+    <h2>Nombre de Usuario:</h2>
+    <p>{{ $usuario->Nombre_usuario }}</p>
+    <button id="editBtn">Editar</button>
 
-            <h2>Nombre de Usuario:</h2>
-            <p>{{ $usuario->Nombre_usuario }}</p>
-            <button id="editBtn">Editar Nombre</button>
-            <h2>Correo Electrónico: </h2>
-            <p>{{ $usuario->Correo_electronico }}</p>
-            
-          
-
-            <h1>Favoritas</h1><br>
-
-            @foreach($favoritas as $favorita)
-                <h2>{{ $favorita->nombre_album }}</h2><br>
-                <h2>{{ $favorita->nombre }}</h2><br>
-                <img style="width: 200px; height: 200px" src="{{ asset('storage/' . $favorita->imagen) }}" alt=""><br>
-                <audio src="{{ asset('storage/' . $favorita->musica) }}" controls loop preload="metadata"></audio>
-            @endforeach
-
-            <h1>Musicas</h1>  
-        @endif
-
-        @if($usuario->musica)
-            <img src="{{ asset('storage/' . $usuario->imagen) }}" style="max-width: 150px;"><br>
-            <h2>{{ $usuario->Musica }}</h2>
-            <h2>{{ $usuario->fecha }}</h2>
-            <audio class="audio" src="{{ asset('storage/' . $usuario->musica) }}" controls loop preload="metadata"></audio> <br>
-        @else
-            <p>No hay música cargada de este usuario.</p>
-        @endif
-    @endforeach
-
-@else
-    <p>No hay información disponible.</p>
+    <h2>Correo Electrónico: </h2>
+    <p>{{ $usuario->Correo_electronico }}</p>
 @endif
 
+<h1>Favoritas</h1>
+@if($favoritas->isNotEmpty())
+    @foreach($favoritas as $nombreAlbum => $cancionesAlbum)
+        <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
 
+        @if($cancionesAlbum->first()->imagen)
+            <img style="max-width: 150px;" src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen álbum"><br>
+        @endif
 
+        <!-- Reproductor de música para este álbum -->
+        <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
 
+        @foreach($cancionesAlbum as $cancion)
+            <strong>{{ $cancion->nombre }}</strong><br>
+            <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
+            <hr>
+        @endforeach
+    @endforeach
+@else
+    <p>No hay canciones en la lista de favoritas.</p>
+@endif
+
+<!-- Modal para editar perfil -->
 <div id="editModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Editar Nombre de Usuario</h2>
-        <form action="{{ route('perfil.update') }}" method="POST">
+        <h2>Actualizar los datos del perfil</h2>
+        <form action="{{ route('perfil.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
-            <label for="user_name">
-                <input type="text" name="user_name" value="{{ old('user_name', $info->user_name) }}" required>
-            </label>
+            <label for="user_name">Nombre de Usuario:</label>
+            <input type="text" name="user_name" value="{{ old('Nombre_usuario', $usuario->Nombre_usuario) }}" ><br><br>
+
+
+            <label for="foto">Actualizar Foto de Perfil:</label>
+            <input type="file" name="foto"><br><br>
 
             <button type="submit">Actualizar</button>
         </form>
@@ -130,30 +120,62 @@
 @include('fotter')
 
 <script>
-   
     var modal = document.getElementById("editModal");
-
- 
     var btn = document.getElementById("editBtn");
-
     var span = document.getElementsByClassName("close")[0];
 
     btn.onclick = function() {
         modal.style.display = "block";
     }
 
-
     span.onclick = function() {
         modal.style.display = "none";
     }
 
-  
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
+
+    function cambiarCancion(reproductorId, cancionUrl) {
+        var reproductor = document.getElementById(reproductorId);
+        reproductor.src = cancionUrl;
+        reproductor.play();
+    }
 </script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: "{{ session('success') }}",
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: "{{ session('error') }}",
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
+
+
+
 
 </body>
 </html>

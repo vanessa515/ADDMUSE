@@ -67,6 +67,7 @@ class regcan extends Controller
             ->get();
             $albumes = DB::table('albumes')
             ->select('pk_album', 'nombre_album', 'imagen')
+            ->where('fk_usuario', Auth::id())
             ->get();
         return view('registroCanciones', compact('categorias', 'albumes')); // Pasamos los datos a la vista
     }
@@ -75,6 +76,7 @@ class regcan extends Controller
     {
         $canciones = DB::table('canciones')
         -> join('albumes', 'canciones.fk_album', '=', 'albumes.pk_album')
+        //->join('usuarios', 'canciones.fk_usuario', '=', 'usuarios.pk_usuarios')
             ->select(
    'pk_cancion',
             'nombre',
@@ -85,12 +87,17 @@ class regcan extends Controller
             'fk_album',
             'albumes.nombre_album'
             )
+           //->where('fk_usuario', Auth::id())
+            ->where('canciones.estatus', '=', '1')
             ->get()
+           
             -> groupBy('nombre_album');
             
         
  $albumes = DB::table('albumes')
         ->select('pk_album', 'nombre_album')
+       // ->join('albumes', 'albumes.fk_usuario', '=', 'usuarios.pk_usuarios')
+ 
         ->where('fk_usuario', Auth::id())
         ->get();
         

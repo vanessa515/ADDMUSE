@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\album;
+use App\Models\canciones;
 use App\Models\categorias;
 use App\Models\usuario;
 use Illuminate\Support\Facades\DB;
@@ -50,19 +51,92 @@ class albumController extends Controller
 
 public function showalbum()
 {
-    $albumes = DB::table('albumes')
-        ->select('pk_album', 'nombre_album', 'imagen')
+    $albumes = DB::table('canciones')
+        ->join('albumes', 'canciones.fk_album', '=', 'albumes.pk_album')
+        ->join('usuarios', 'canciones.fk_usuario', '=', 'usuarios.pk_usuarios')
+        ->select(
+            'pk_cancion',
+            'nombre',
+            'canciones.imagen',
+            'canciones.estatus',
+            'albumes.imagen as imagen_album',
+            'musica',
+            'duracion',
+            'fecha',
+            'fk_album',
+            'albumes.nombre_album'
+        )
+        ->where('usuarios.pk_usuarios', '=', Auth::id())
+            
+        ->get();  
+        $albumes = $albumes->groupBy('nombre_album');
+    // Obtener el perfil del usuario
+    $usuario = new usuario();
+    $usuarios = $usuario->showperfil();
+
+    // Pasar los datos a la vista
+    return view('vistaAlbum', compact('albumes', 'usuarios'));
+}
+
+public function update(Request $request)
+{
+    try {
+        // Validar los datos del formulario
+        $validatedData = $request->validate([
+            'pk_cancion' => 'required|exists:canciones,pk_cancion', // Verificar que el ID existe
+            'nombre' => 'required|string|max:45',
+            'imagen' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // La imagen es opcional
+        ]);
+
+        // Buscar la canción específica por su clave primaria
+        $cancion = canciones::findOrFail($validatedData['pk_cancion']);
+
+        // Actualizar los campos
+        $cancion->nombre = $validatedData['nombre'];
+
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('canciones', 'public');
+            $cancion->imagen = $path;
+        }
+
+        $cancion->save();
+
+        return redirect()->back()->with('success', 'Datos actualizados correctamente.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Error al ejecutar la consulta: ' . $e->getMessage());
+    }
+}
+
+
+
+
+public function delete(Request $request)
+{
+    // Validar que el 'pk_cancion' sea proporcionado
+    $validatedData = $request->validate([
+        'pk_cancion' => 'required|exists:canciones,pk_cancion',
+    ]);
+
+    // Encontrar la canción
+    $cancion = canciones::findOrFail($validatedData['pk_cancion']);
+
+    // Verificar si el estatus es 1
+    if ($cancion->estatus == 1) {
+        $cancion->estatus = 0; // Cambiar el estatus a 0
+        $cancion->save();
+
+    
+}else{
+    
+        $cancion->estatus = 1; 
+        $cancion->save();
+
+
         
-        ->get();
-     
-        $usuario=new usuario();
-        $usuarios = $usuario->showperfil();
-            //   dd($usuarios);
-    return view('vistaAlbum', compact('albumes', 'usuarios')); // Pasamos los datos a la vista
+ return redirect()->back()->with('error', 'La canción ya está eliminada o no tiene el estatus esperado.');
+
+ }
+ return redirect()->back()->with('success', 'Canción eliminada correctamente.');
 }
-
-
 }
-
-
 

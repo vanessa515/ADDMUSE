@@ -36,25 +36,40 @@ class perfilController extends Controller
         ->join('albumes', 'favoritas.fk_album', '=', 'albumes.pk_album')
         ->where('usuarios.pk_usuarios', '=', Auth::id())
         ->select('albumes.nombre_album', 'canciones.nombre', 'canciones.imagen', 'canciones.musica')
-        ->get();
+        ->orderBy('albumes.nombre_album') 
+        ->where('canciones.estatus', '=', '1')
+        ->get()
+        ->groupBy('nombre_album'); 
         
       
-         $info = Auth::user(); // Obtener el perfil del usuario autenticado
+        //  $info = Auth::user(); 
         //  dd($favoritas);
-        return view('perfil', compact('usuarios',  'favoritas', 'info'));
+        return view('perfil', compact('usuarios',  'favoritas'));
     }
 ////////////////////
 
 public function update(Request $request)
 {
     try {
-        $usuario = Auth::user(); // Obtener el usuario autenticado
+        $usuario = Auth::user(); 
 
         $validatedData = $request->validate([
             'user_name' => 'required|string|max:250',
+            'foto' => 'nullable|file|mimes:jpg,jpeg,gif,png|max:2048', 
         ]);
 
         $usuario->user_name = $validatedData['user_name'];
+
+   
+        if ($request->hasFile('foto')) {
+        
+            $path = $request->file('foto')->store('storage', 'public'); 
+
+            //dd($path);  // Verifica el path de la imagen guardada
+
+            $usuario->foto = str_replace('public/', 'storage/', $path); // Ajustar la ruta para uso público
+        }
+
         $usuario->save();
 
         return redirect()->back()->with('success', 'Datos actualizados correctamente.');

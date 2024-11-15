@@ -33,19 +33,32 @@
 
 
 
-@if ($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @if (session('success'))
-        <div>{{ session('success') }}</div>
-    @endif
+
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: "{{ session('success') }}",
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: "{{ session('error') }}",
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
 
 </body>
 </html>
