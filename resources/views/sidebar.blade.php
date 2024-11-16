@@ -14,7 +14,7 @@
             <div class="flex items-center justify-between">
                 <!-- Logo -->
                 <div class="flex items-center justify-start rtl:justify-end">
-                    <a href="home" class="flex ms-2 md:me-24">
+                    <a href="index" class="flex ms-2 md:me-24">
                         <span class="self-center text-xl font-bold sm:text-2xl whitespace-nowrap">ADDMUSE</span>
                     </a>
                 </div>
@@ -22,11 +22,14 @@
                 <!-- Navigation Links and Search -->
                 <div class="flex items-center justify-between">
                     <div class="flex gap-10 items-center">
+                    <div class="md:mr-[5rem]">
+                            <a class="text-md font-bold hover:text-sky-800" href="home"> Explorar</a>
+                        </div>
                         <div class="md:mr-[5rem]">
-                            <a class="text-md font-bold hover:text-sky-800" href="">Sobre Nosotros</a>
+                            <a class="text-md font-bold hover:text-sky-800" href="sobrenosotros">Sobre Nosotros</a>
                         </div>
                         <div class="md:mr-[5rem] mr-2">
-                            <a class="text-md font-bold hover:text-sky-800" href="vistaAlbum">Musica</a>
+                            <a class="text-md font-bold hover:text-sky-800" href="vistaAlbum">Tu musica</a>
                         </div>
                         <div class="md:flex hidden mr-[2rem]">
                             <div class="relative">

@@ -27,7 +27,7 @@ class logincontroller extends Controller
             Auth::login($usuario);
 
             // Redirigir al usuario a una página después del login
-            return redirect()->route('home')->with('success', 'Has iniciado sesión correctamente');
+            return redirect()->route('index')->with('success', 'Has iniciado sesión correctamente');
         }
 
         // Si la autenticación falla, devolver un error

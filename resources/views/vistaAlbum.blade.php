@@ -70,9 +70,9 @@
         <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
 
         @foreach($canciones as $cancion)
-        <img style="width: 20px; height: auto;" src="{{ asset('storage/' . $cancion->imagen) }}" alt=""> <strong>{{ $cancion->nombre }}</strong> 
+        <img style="width: 50px; height: auto;" src="{{ asset('storage/' . $cancion->imagen) }}" alt=""> <strong>{{ $cancion->nombre }}</strong> 
           
-            <button onclick="abrirModal('{{ $cancion->pk_cancion }}', '{{ $cancion->nombre }}', '{{ asset('storage/' . $cancion->imagen) }}')">Editar</button><br>
+            <button onclick="abrirModal('{{ $cancion->pk_cancion }}','{{ $cancion->pk_album }}','{{ $cancion->nombre_album }}','{{ $cancion->nombre }}', '{{ asset('storage/' . $cancion->imagen) }}')">Editar</button><br>
             
             <form action="{{ route('cancion.delete') }}" method="POST">
                  @csrf
@@ -95,12 +95,23 @@
 <div id="editModal" class="modal">
     <div class="modal-content">
         
-        <h2>Actualizar los datos de la canción</h2>
+        <h2>Actualizar los datos del album</h2><br>
         <form action="{{ route('cancion.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <input type="hidden" name="pk_cancion" id="pk_cancion">
+            <input type="hidden" name="pk_album" id="pk_album">
+           
+            <label for="nombre_album">Nombre del album:</label>
+            <input type="text" name="nombre_album" id="nombre_album"><br><br>
+
+            
+            <label for="imagen_album">Imagen del album:</label>
+            <input type="file" name="imagen_album"><br><br>
+
+<hr>
+            <h2>Actualizar los datos de la canción</h2><br><br>
 
             <label for="nombre">Nombre de la canción:</label>
             <input type="text" name="nombre" id="nombre"><br><br>
@@ -114,12 +125,42 @@
 </div>
 @include('fotter')
 
-<script>
-    // Modal de editar canción
-    function abrirModal(pk_cancion, nombre, imagenUrl) {
-        document.getElementById('nombre').value = nombre;
-        document.getElementById('pk_cancion').value = pk_cancion;
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<!-- 
+    // Mostrar mensajes de SweetAlert basados en la sesión -->
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '{{ session("success") }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: '{{ session("error") }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
+
+    <script>
+    // Modal de editar canción
+    function abrirModal(pk_cancion, pk_album, nombre_album, nombre, imagenUrl) {
+        document.getElementById('pk_cancion').value = pk_cancion;
+        document.getElementById('pk_album').value = pk_album;
+        document.getElementById('nombre_album').value = nombre_album;
+        document.getElementById('nombre').value = nombre;
+      
         var modal = document.getElementById("editModal");
         modal.style.display = "block";
     }
@@ -142,35 +183,6 @@
         }
     }
 </script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-@if (session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: "{{ session('success') }}",
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Aceptar'
-        });
-    </script>
-@endif
-
-@if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: '¡Error!',
-            text: "{{ session('error') }}",
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Aceptar'
-        });
-    </script>
-@endif
-
 
 </body>
 </html>

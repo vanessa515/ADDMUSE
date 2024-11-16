@@ -64,6 +64,7 @@ public function showalbum()
             'duracion',
             'fecha',
             'fk_album',
+            'pk_album',
             'albumes.nombre_album'
         )
         ->where('usuarios.pk_usuarios', '=', Auth::id())
@@ -86,12 +87,13 @@ public function update(Request $request)
             'pk_cancion' => 'required|exists:canciones,pk_cancion', // Verificar que el ID existe
             'nombre' => 'required|string|max:45',
             'imagen' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // La imagen es opcional
+            'pk_album' => 'required|exists:albumes,pk_album', 
+            'nombre_album' => 'required|string|max:250',
+            'imagen_album' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Buscar la canción específica por su clave primaria
         $cancion = canciones::findOrFail($validatedData['pk_cancion']);
-
-        // Actualizar los campos
         $cancion->nombre = $validatedData['nombre'];
 
         if ($request->hasFile('imagen')) {
@@ -100,6 +102,17 @@ public function update(Request $request)
         }
 
         $cancion->save();
+
+          // Actualizar álbum
+         $album = album::findOrFail($validatedData['pk_album']);
+         $album->nombre_album = $validatedData['nombre_album'];
+
+         if ($request->hasFile('imagen_album')) {
+             $path = $request->file('imagen_album')->store('albumes', 'public');
+             $album->imagen = $path;
+         }
+         $album->save();
+
 
         return redirect()->back()->with('success', 'Datos actualizados correctamente.');
     } catch (\Exception $e) {
@@ -132,11 +145,10 @@ public function delete(Request $request)
         $cancion->save();
 
 
-        
- return redirect()->back()->with('error', 'La canción ya está eliminada o no tiene el estatus esperado.');
-
- }
  return redirect()->back()->with('success', 'Canción eliminada correctamente.');
+ }
+
+ return redirect()->back()->with('error', 'La canción ya está eliminada o no tiene el estatus esperado.');
 }
 }
 

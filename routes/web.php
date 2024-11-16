@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\registrousuario;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\favoritaController;
 use App\Http\Controllers\logincontroller;
 use App\Http\Controllers\perfilController;
@@ -31,6 +32,12 @@ Route::post('/registrous', [registrousuario::class, 'store'])->name('register.st
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/index', [DataController::class, 'data'])->middleware('auth')->name('index');
+
+
+Route::get('/sobrenosotros', [DataController::class, 'data2'])->middleware('auth')->name('sobrenosotros');
 
 
 Route::get('/home', function () {

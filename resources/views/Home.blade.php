@@ -49,10 +49,10 @@
 </form>
 <br><br>
 
-@if (Auth::check())
+<!-- @if (Auth::check())
     <h1>Bienvenido, {{ Auth::user()->user_name }}!</h1>
     <hr>
-@endif
+@endif -->
 
 <h1>Música</h1>
 
@@ -79,7 +79,7 @@
 <div id="albumModal" class="modal">
     <div class="modal-content">
         <span onclick="closeModal()" style="cursor:pointer;">&times; Cerrar</span>
-        <h2>Añadir a favoritos</h2>
+        <h2>Añadir a favoritos u otro album</h2>
         <form id="favoritaForm" action="{{ route('favorita.store') }}" method="POST">
             @csrf
             <input type="hidden" name="fk_cancion" id="fk_cancion">

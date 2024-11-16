@@ -73,7 +73,7 @@
     <h2>Correo Electrónico: </h2>
     <p>{{ $usuario->Correo_electronico }}</p>
 @endif
-
+<hr>
 <h1>Favoritas</h1>
 @if($favoritas->isNotEmpty())
     @foreach($favoritas as $nombreAlbum => $cancionesAlbum)
