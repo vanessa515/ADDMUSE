@@ -144,11 +144,11 @@ public function delete(Request $request)
         $cancion->estatus = 1; 
         $cancion->save();
 
+        return redirect()->back()->with('error', 'La canción esta de nuevo en linea.');
 
- return redirect()->back()->with('success', 'Canción eliminada correctamente.');
  }
+ return redirect()->back()->with('success', 'Canción eliminada correctamente.');
 
- return redirect()->back()->with('error', 'La canción ya está eliminada o no tiene el estatus esperado.');
 }
 }
 

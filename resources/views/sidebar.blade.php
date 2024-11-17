@@ -14,7 +14,7 @@
             <div class="flex items-center justify-between">
                 <!-- Logo -->
                 <div class="flex items-center justify-start rtl:justify-end">
-                    <a href="index" class="flex ms-2 md:me-24">
+                    <a href="{{ route('index') }}" class="flex ms-2 md:me-24">
                         <span class="self-center text-xl font-bold sm:text-2xl whitespace-nowrap">ADDMUSE</span>
                     </a>
                 </div>
@@ -23,14 +23,16 @@
                 <div class="flex items-center justify-between">
                     <div class="flex gap-10 items-center">
                     <div class="md:mr-[5rem]">
-                            <a class="text-md font-bold hover:text-sky-800" href="home"> Explorar</a>
+                            <a class="text-md font-bold hover:text-sky-800" href="{{ route('home') }}"> Explorar</a>
+                            
                         </div>
                         <div class="md:mr-[5rem]">
-                            <a class="text-md font-bold hover:text-sky-800" href="sobrenosotros">Sobre Nosotros</a>
+                            <a class="text-md font-bold hover:text-sky-800" href="{{ route('sobrenosotros') }}">Sobre Nosotros</a>
                         </div>
                         <div class="md:mr-[5rem] mr-2">
-                            <a class="text-md font-bold hover:text-sky-800" href="vistaAlbum">Tu musica</a>
+                            <a class="text-md font-bold hover:text-sky-800" href="{{ route('vistaAlbum') }}"  >Tu musica</a>
                         </div>
+
                         <div class="md:flex hidden mr-[2rem]">
                             <div class="relative">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -61,7 +63,7 @@
                                 </div>
                                 <ul class="py-1" role="none">
                                     <li>
-                                        <a href="perfil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Perfil</a>
+                                        <a href="{{ route('perfil') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Perfil</a>
                                     </li>
                                     <li>
                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Favoritos</a>

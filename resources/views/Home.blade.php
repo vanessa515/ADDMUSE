@@ -6,17 +6,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <title>Página Principal</title>
 
-    <script>
-        if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registrado:', registration);
-          })
-          .catch((error) => {
-            console.log('Error:', error);
-          });
-      }
-    </script>
 
     <style>
         .modal {
@@ -57,8 +46,9 @@
 <h1>Música</h1>
 
 @foreach($canciones as $nombreAlbum => $cancionesAlbum)
+<a href="{{ route('albumselect.showcanalb', ['id' => $cancionesAlbum->first()->fk_album]) }}">
     <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
-    
+</a>
     @if($cancionesAlbum->first()->imagen)
         <img style="max-width: 150px;" src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen album"><br>
     @endif
@@ -99,6 +89,7 @@
 <a href="registrocat">Registrar categoría</a><br>
 <a href="registrocan">Registrar canciones</a><br>
 <a href="registroAlbum">Registrar Álbum</a><br>
+<a href="albumselect">album seleccionado</a>
 
 
 

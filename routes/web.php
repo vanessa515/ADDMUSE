@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\albumController;
+use App\Http\Controllers\albumselectController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\registrousuario;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\cancionselectController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\favoritaController;
 use App\Http\Controllers\logincontroller;
@@ -69,7 +71,7 @@ Route::get('/perfil', [perfilController::class, 'showperfil'])->middleware('auth
 Route::get('/registroAlbum', [albumController::class, 'showcat'])->middleware('auth')->name('registroAlbum');
 Route::post('/registroAlbum', [albumController::class, 'store'])->middleware('auth')->name('album.store');
 
-Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->name('albumshow')->middleware('auth')->name('/vistaAlbum');
+Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->middleware('auth')->name('vistaAlbum');
  Route::middleware('auth')->group(function () {
     
      Route::put('/vistaAlbum', [albumController::class, 'update'])->name('cancion.update');
@@ -85,7 +87,6 @@ Route::middleware('auth')->group(function () {
     Route::put('perfil', [perfilController::class, 'update'])->name('perfil.update');
 });
 
-
-
+Route::get('/albumselect/{id}', [albumselectController::class, 'showcanalb'])->middleware('auth')->name('albumselect.showcanalb');
 
 

@@ -12,6 +12,17 @@
     <h1>Bienvenido, {{ Auth::user()->user_name }}!</h1>
     <hr>
 @endif
+<script>
+        if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registrado:', registration);
+          })
+          .catch((error) => {
+            console.log('Error:', error);
+          });
+      }
+    </script>
 
 <br><br><br>
 <a href="/home"><button>Explora Ahora</button></a>

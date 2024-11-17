@@ -74,36 +74,47 @@ class regcan extends Controller
 
     public function showcan()
     {
-        $canciones = DB::table('canciones')
-        -> join('albumes', 'canciones.fk_album', '=', 'albumes.pk_album')
-        //->join('usuarios', 'canciones.fk_usuario', '=', 'usuarios.pk_usuarios')
-            ->select(
-   'pk_cancion',
-            'nombre',
-            'canciones.imagen',
-            'musica',
-            'duracion',
-            'fecha',
-            'fk_album',
-            'albumes.nombre_album'
-            )
-           //->where('fk_usuario', Auth::id())
-            ->where('canciones.estatus', '=', '1')
-            ->get()
-           
-            -> groupBy('nombre_album');
-            
+        $canciones = DB::table(DB::raw('
+        (SELECT 
+            pk_cancion,
+            nombre,
+            canciones.imagen,
+            musica,
+            duracion,
+            fecha,
+            fk_album,
+            albumes.nombre_album,
+            ROW_NUMBER() OVER (PARTITION BY fk_album ORDER BY fecha) AS row_num
+        FROM canciones
+        JOIN albumes ON canciones.fk_album = albumes.pk_album
+        WHERE canciones.estatus = 1) AS canciones_limitadas
+    '))
+    ->where('row_num', '<=', 4)  // Limita a las primeras 4 canciones por álbum
+    ->select(
+        'pk_cancion',
+        'nombre',
+        'imagen',
+        'musica',
+        'duracion',
+        'fecha',
+        'fk_album',
+        'nombre_album'
+    )
+    ->get()
+    ->groupBy('nombre_album');
+
+
         
  $albumes = DB::table('albumes')
         ->select('pk_album', 'nombre_album')
-       // ->join('albumes', 'albumes.fk_usuario', '=', 'usuarios.pk_usuarios')
+   
  
         ->where('fk_usuario', Auth::id())
         ->get();
         
         $usuario=new usuario();
         $usuarios = $usuario->showperfil();
-        return view('home', compact('canciones', 'albumes', 'usuarios')); // Pasamos los datos a la vista
+        return view('home', compact('canciones', 'albumes', 'usuarios')); 
     }
 
     

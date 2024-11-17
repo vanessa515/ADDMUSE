@@ -1,5 +1,5 @@
 { 
-"start_url":"ADDMUSE/home.blade.php",    
+"start_url":"ADDMUSE/index.blade.php",    
 "short_name": "PWA ADDMUSE",  
     "name": "PWA-ADDMUSE-PROJECT",  
     "description": "ADDMUSE proyecto de música progresiva",  
