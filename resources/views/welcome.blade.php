@@ -19,9 +19,17 @@
 <body>
 
     <div class="flex justify-center items-center min-h-screen bg-gray-100">
-        <div class="flex flex-col">
+        <div class="flex flex-col w-[21rem]">
+        <div class="flex justify-center">
+            <div class="bg-red-400 opacity-85 blur-md rounded-full w-10 h-10 absolute"></div>
+            <div>
+                <h1 class="text-center text-4xl font-bold z-50">ADDMUSE</h1>
+            </div>
+        </div>
+        <div class="mt-10">
             <h1 class="text-center text-4xl font-bold">Registrate en</h1>
             <h1 class="text-center text-4xl font-bold">AddMuse</h1>
+        </div>
            <div class="mt-10">
                 <form action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
