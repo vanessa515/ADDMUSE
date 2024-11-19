@@ -40,40 +40,69 @@
             text-decoration: none;
             cursor: pointer;
         }
-
-        button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
 @include('sidebar')
-
-<h1>Perfil</h1><br><br><br>
-
-@if($usuarios->isNotEmpty())
-    @php
-        $usuario = $usuarios->first(); // Obtén solo el primer usuario
-    @endphp
-    <p>Cambiar foto de perfil</p>
-    <img style="width: 20%; height: auto;" src="{{ asset('storage/' . $usuario->imagen_perfil) }}" alt="user photo">
-
-    <h2>Nombre de Usuario:</h2>
-    <p>{{ $usuario->Nombre_usuario }}</p>
-    <button id="editBtn">Editar</button>
-
-    <h2>Correo Electrónico: </h2>
-    <p>{{ $usuario->Correo_electronico }}</p>
-@endif
-<hr>
+<div class="p-4">
+    <div class="border-2 border-gray-200 border-dashed rounded-lg mt-14">
+        <!-- INICIO CONTENEDOR -->
+        @if($usuarios->isNotEmpty())
+            @php
+                $usuario = $usuarios->first(); // Obtén solo el primer usuario
+            @endphp
+        <div class="flex justify-center mt-5">
+                <div class="flex flex-col">
+                    <div class="bg-[#007AB7] p-10 justify-center w-[70rem]">
+                        <div class="flex justify-start">
+                            <!-- <span class="hover:bg-red-500">Cambiar foto</span> -->
+                        </div>
+                        <div class="flex pl-5 mt-10">
+                            <div class="flex">
+                                <div class="flex w-[10rem] h-[10rem]">
+                                    <img class="rounded-full" src="{{ asset('storage/' . $usuario->imagen_perfil) }}" alt="user photo">
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-col">
+                                        <p class="text-[#FDFEFF] text-2xl font-bold pl-10">{{ $usuario->Nombre_usuario }}</p>
+                                        <div class="mt-3">
+                                            <span class="pl-10 text-[#FDFEFF] text-base font-bold">Seguidores <span>0</span></span>
+                                            <span class="pl-3 text-[#FDFEFF] text-base font-bold">Siguiendo <span>0</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end items-center">
+                            <button id="editBtn" class="flex text-[#FDFEFF] hover:text-gray-300 group">Editar Perfil
+                            <div class="px-2 text-[#FDFEFF] group-hover:text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                            </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class=" flex">
+                        <a class="px-2" href="">
+                            <div class="border-t-4 border-[#007AB7]">
+                                <span class="font-semibold text-base text-[#007AB7]">Perfil</span>
+                            </div>
+                        </a>    
+                        <a class="px-2" href="">
+                            <div class="border-t-4 border-[#ffffff] hover:border-[#007AB7]">
+                                <span class="font-semibold text-base hover:text-[#007AB7]">Favoritos</span>
+                            </div>
+                        </a>
+                        <a class="px-2" href="">
+                            <div class="border-t-4 border-[#ffffff] hover:border-[#007AB7]">
+                                <span class="font-semibold text-base hover:text-[#007AB7]">Subidas</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endif
 <h1>Favoritas</h1>
 @if($favoritas->isNotEmpty())
     @foreach($favoritas as $nombreAlbum => $cancionesAlbum)
@@ -95,7 +124,9 @@
 @else
     <p>No hay canciones en la lista de favoritas.</p>
 @endif
-
+        <!-- FIN DEL CONTENEDOR PADDING -->
+    </div>
+</div>
 <!-- Modal para editar perfil -->
 <div id="editModal" class="modal">
     <div class="modal-content">
