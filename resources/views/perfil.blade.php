@@ -45,7 +45,7 @@
 <body>
 @include('sidebar')
 <div class="p-4">
-    <div class="border-2 border-gray-200 border-dashed rounded-lg mt-14">
+    <div class="mt-14">
         <!-- INICIO CONTENEDOR -->
         @if($usuarios->isNotEmpty())
             @php
@@ -103,25 +103,59 @@
                 </div>
             </div>
         @endif
-<h1>Favoritas</h1>
 @if($favoritas->isNotEmpty())
     @foreach($favoritas as $nombreAlbum => $cancionesAlbum)
-        <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
-
-        @if($cancionesAlbum->first()->imagen)
-            <img style="max-width: 150px;" src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen álbum"><br>
-        @endif
-
+<h1>Favoritas</h1>
+                <!-- CARD 1 -->
+                <div class="md:w-[18rem] border border-black rounded-sm mb-10">
+                  <div class="p-5">
+                    <a href="" class="flex justify-end hover:text-sky-500">
+                      <span>Ver Album</span>
+                    </a>
+                    <div class="mt-2 P-2">
+                        @if($cancionesAlbum->first()->imagen)
+                            <img src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen álbum">
+                        @endif
+                    </div>
+                    <div class="text-center mt-4">
+                      <span>{{ $nombreAlbum }}</span>
+                    </div>
+                    <div class="mt-1 text-center">
+                      <span>Aqui va el nombre del artista</span>
+                    </div>
+                    <div class="w-full flex mt-5">
+                        <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata"></audio>
+                    </div>
+                    
+                    <div class="border-b mt-7"></div>
+                    @foreach($cancionesAlbum as $cancion)
+                      <div class="flex justify-between mt-4 items-center">
+                        <span>
+                          <div class="flex">
+                            <!-- Aqui va el numero de posicion de la cancion -->
+                            <!-- <span>1</span> -->
+                            <spans>{{ $cancion->nombre }}</span>
+                          </div>                       
+                        </span>
+                        <div>
+                        <button class="hover:text-[#007AB7] justify-end flex" onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                            </svg>
+                        </button> 
+                        </div>
+                      </div>
+                  </div>
+                    <div class="border-b"></div>
+                    @endforeach
+                </div>
+                <!-- CARD 1 FIN -->
+                @endforeach
+            @else
         <!-- Reproductor de música para este álbum -->
-        <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
 
-        @foreach($cancionesAlbum as $cancion)
-            <strong>{{ $cancion->nombre }}</strong><br>
-            <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
-            <hr>
-        @endforeach
-    @endforeach
-@else
+        
     <p>No hay canciones en la lista de favoritas.</p>
 @endif
         <!-- FIN DEL CONTENEDOR PADDING -->
