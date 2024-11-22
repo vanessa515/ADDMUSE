@@ -15,7 +15,12 @@
                 <!-- Logo -->
                 <div class="flex items-center justify-start rtl:justify-end">
                     <a href="{{ route('index') }}" class="flex ms-2 md:me-24">
-                        <span class="self-center text-xl font-bold sm:text-2xl whitespace-nowrap">ADDMUSE</span>
+                    <div class="flex justify-center">
+                        <div class="bg-red-400 opacity-65 blur-sm rounded-full w-5 h-5 absolute"></div>
+                        <div>
+                            <h1 class="text-center text-xl font-bold z-50">ADDMUSE</h1>
+                        </div>
+                    </div>
                     </a>
                 </div>
 

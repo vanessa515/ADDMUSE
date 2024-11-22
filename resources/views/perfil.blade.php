@@ -40,18 +40,6 @@
             text-decoration: none;
             cursor: pointer;
         }
-
-        button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
@@ -105,7 +93,9 @@
 @else
     <p>No hay canciones en la lista de favoritas.</p>
 @endif
-
+        <!-- FIN DEL CONTENEDOR PADDING -->
+    </div>
+</div>
 <!-- Modal para editar perfil -->
 <div id="editModal" class="modal">
     <div class="modal-content">
