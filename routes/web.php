@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\registrousuario;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\buscadorController;
 use App\Http\Controllers\cancionselectController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\favoritaController;
@@ -76,6 +77,8 @@ Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->middleware('au
     
      Route::put('/vistaAlbum', [albumController::class, 'update'])->name('cancion.update');
      Route::post('/vistaAlbum', [albumController::class, 'delete'])->name('cancion.delete');
+///////////////////////////////////////////////////RUTA DESVINCULAR////////////////////////////////////////////////////////////////
+     Route::put('/perfil/{id}', [perfilController::class,'desvincular'])->name('cancion.desvincular');
  });
 
 Route::post('/favorita/store', [favoritaController::class, 'store'])->name('favorita.store');
@@ -88,5 +91,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/albumselect/{id}', [albumselectController::class, 'showcanalb'])->middleware('auth')->name('albumselect.showcanalb');
+
+
 
 

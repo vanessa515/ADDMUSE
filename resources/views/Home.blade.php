@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <title>Página Principal</title>
 
-
     <style>
         .modal {
             display: none; 
@@ -26,11 +25,14 @@
             border: 1px solid #888;
             width: 80%; 
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-@include('sidebar') 
+@include('sidebar')
 
 <form action="{{ route('logout') }}" method="POST">
     @csrf
@@ -38,32 +40,49 @@
 </form>
 <br><br>
 
-<!-- @if (Auth::check())
-    <h1>Bienvenido, {{ Auth::user()->user_name }}!</h1>
-    <hr>
-@endif -->
-
 <h1>Música</h1>
 
-@foreach($canciones as $nombreAlbum => $cancionesAlbum)
-<a href="{{ route('albumselect.showcanalb', ['id' => $cancionesAlbum->first()->fk_album]) }}">
-    <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
-</a>
-    @if($cancionesAlbum->first()->imagen)
-        <img style="max-width: 150px;" src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen album"><br>
-    @endif
-    
-    <!-- Reproductor de música para este álbum -->
-    <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
 
-    @foreach($cancionesAlbum as $cancion)
-        <strong>{{ $cancion->nombre }}</strong><br>
-        <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
-        <p>{{ $cancion->fecha }}</p>
-        <button onclick="openModal('{{ $cancion->pk_cancion }}')">Agregar a Favoritas</button>
-        <hr>
-    @endforeach
+
+<center>
+<div class="md:flex hidden mr-[2rem]">
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <form  action="" method="" >
+            <input type="search" class="block w-[20rem] p-4 ps-10 text-sm border border-black bg-gray-50 focus:ring-blue-500 focus:border-blue-500"id="buscarCancion" placeholder="Buscar canción..." oninput="filtrarCanciones()"  required />
+        </form>
+    </div>
+</div>
+</center>
+
+<!-- Mostrar canciones recomendadas (limitadas por álbum) solo si hay canciones -->
+@foreach($canciones as $nombreAlbum => $cancionesAlbum)
+    @if($cancionesAlbum->isNotEmpty())
+        <a href="{{ route('albumselect.showcanalb', ['id' => $cancionesAlbum->first()->fk_album]) }}">
+            <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
+        </a>
+        @if($cancionesAlbum->first()->imagen)
+            <img style="max-width: 150px;" src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen album"><br>
+        @endif
+
+        <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
+
+        @foreach($cancionesAlbum as $cancion)
+            <div class="cancion-item">
+                <strong>{{ $cancion->nombre }}</strong><br>
+                <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
+                <p>{{ $cancion->fecha }}</p>
+                <button onclick="openModal('{{ $cancion->pk_cancion }}')">Agregar a Favoritas</button>
+                <hr>
+            </div>
+        @endforeach
+    @endif
 @endforeach
+
 
 <!-- Modal -->
 <div id="albumModal" class="modal">
@@ -91,9 +110,6 @@
 <a href="registroAlbum">Registrar Álbum</a><br>
 <a href="albumselect">album seleccionado</a>
 
-
-
-
 <script>
     function cambiarCancion(reproductorId, urlMusica) {
         const reproductor = document.getElementById(reproductorId);
@@ -115,11 +131,32 @@
             closeModal();
         }
     }
+
+    // Verificar si el navegador soporta el elemento <audio>
+    if (!document.createElement('audio').canPlayType) {
+        document.querySelectorAll('audio').forEach(function(audio) {
+            audio.parentElement.classList.add('hidden');
+        });
+    }
+
+
+    ///////////////////
+    function filtrarCanciones() {
+        const input = document.getElementById('buscarCancion').value.toLowerCase();
+        const canciones = document.querySelectorAll('strong'); // Seleccionar todos los nombres de canciones
+
+        canciones.forEach(cancion => {
+            const nombre = cancion.textContent.toLowerCase();
+            if (nombre.includes(input)) {
+                cancion.parentElement.style.display = ''; // Mostrar si coincide
+            } else {
+                cancion.parentElement.style.display = 'none'; // Ocultar si no coincide
+            }
+        });
+    }
 </script>
 
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 @if (session('success'))
     <script>
@@ -145,7 +182,7 @@
     </script>
 @endif
 
-
 @include('fotter')
+
 </body>
 </html>

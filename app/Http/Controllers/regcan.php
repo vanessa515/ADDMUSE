@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\can_alb;
 use App\Models\Canciones;
 use App\Models\usuario;
 use Carbon\Carbon;
@@ -18,7 +19,6 @@ class regcan extends Controller
             'imagen' => 'required|file|mimes:jpg,jpeg,png|max:2048', 
             'musica' => 'required|file|mimes:mp3,wav|max:5048', 
             'duracion' => 'required|string|max:45', 
-          
             'fk_categoria' => 'required|int',
             'fk_album' => 'required|int',
         ]);
@@ -72,9 +72,11 @@ class regcan extends Controller
         return view('registroCanciones', compact('categorias', 'albumes')); // Pasamos los datos a la vista
     }
 
-    public function showcan()
+    public function showcan(Request $request)
     {
-        $canciones = DB::table(DB::raw('
+    
+    // Aquí se carga siempre las canciones limitadas por álbum, incluso si no se realiza búsqueda
+    $canciones = DB::table(DB::raw('
         (SELECT 
             pk_cancion,
             nombre,
@@ -102,22 +104,21 @@ class regcan extends Controller
     )
     ->get()
     ->groupBy('nombre_album');
-
-
-        
- $albumes = DB::table('albumes')
+    
+    // Cargar álbumes
+    $albumes = DB::table('albumes')
         ->select('pk_album', 'nombre_album')
-   
- 
         ->where('fk_usuario', Auth::id())
         ->get();
-        
-        $usuario=new usuario();
-        $usuarios = $usuario->showperfil();
-        return view('home', compact('canciones', 'albumes', 'usuarios')); 
-    }
-
     
+    // Obtener datos del usuario
+    $usuario = new Usuario();
+    $usuarios = $usuario->showperfil();
+
+    return view('home', compact('canciones', 'albumes', 'usuarios'));
+}
+
+
  
 }
 

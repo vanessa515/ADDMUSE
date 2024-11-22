@@ -69,6 +69,7 @@
     <h2>Nombre de Usuario:</h2>
     <p>{{ $usuario->Nombre_usuario }}</p>
     <button id="editBtn">Editar</button>
+          
 
     <h2>Correo Electrónico: </h2>
     <p>{{ $usuario->Correo_electronico }}</p>
@@ -77,6 +78,7 @@
 <h1>Favoritas</h1>
 @if($favoritas->isNotEmpty())
     @foreach($favoritas as $nombreAlbum => $cancionesAlbum)
+      
         <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
 
         @if($cancionesAlbum->first()->imagen)
@@ -90,6 +92,14 @@
             <strong>{{ $cancion->nombre }}</strong><br>
             <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
             <hr>
+            <!--/////////////////////////////////////////////////////////FORMULARIO DESVINCULAR////////////////////////////////////////////////////////////////-->
+      
+            <form action="{{ route('cancion.desvincular', ['id' => $cancion->pk_cancion]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            
+            <button type="submit">Desvincular</button> 
+            </form>
         @endforeach
     @endforeach
 @else

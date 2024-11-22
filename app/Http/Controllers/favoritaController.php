@@ -27,6 +27,8 @@ class favoritaController extends Controller
         $favorita -> fk_cancion = $validate['fk_cancion'];
         $favorita -> fk_usuario = auth()->id();
         $favorita -> save();
+
+        
         
 
         return redirect()->back()->with('success', 'Favoritas agregadas exitosamente');

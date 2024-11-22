@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\can_alb;
 use Illuminate\Http\Request;
 use App\Models\canciones;
+use App\Models\favorita;
 use App\Models\usuario;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -31,11 +32,12 @@ class perfilController extends Controller
         ->get();
 
         $favoritas = DB::table('favoritas')
+      
         ->join('usuarios', 'favoritas.fk_usuario', '=', 'usuarios.pk_usuarios')
         ->join('canciones', 'favoritas.fk_cancion', '=', 'canciones.pk_cancion')
         ->join('albumes', 'favoritas.fk_album', '=', 'albumes.pk_album')
         ->where('usuarios.pk_usuarios', '=', Auth::id())
-        ->select('albumes.nombre_album', 'canciones.nombre', 'canciones.imagen', 'canciones.musica')
+        ->select('canciones.pk_cancion','albumes.nombre_album', 'canciones.nombre', 'canciones.imagen', 'canciones.musica')
         ->orderBy('albumes.nombre_album') 
         ->where('canciones.estatus', '=', '1')
         ->get()
@@ -77,4 +79,26 @@ public function update(Request $request)
         return redirect()->back()->with('error', 'Error al ejecutar la consulta: ' . $e->getMessage());
     }
 }
+
+
+public function desvincular($id)
+{
+   // Verifica si el registro existe en la tabla 'favoritas' para el usuario autenticado
+   $favorita = favorita::where('fk_cancion', $id)
+   ->where('fk_usuario', auth()->id())  // Asegúrate de que sea del usuario autenticado
+   ->first();
+
+if (!$favorita) {
+return redirect()->back()->with('error', 'Favorita no encontrada.');
+}
+
+// Eliminar el registro de la tabla 'favoritas'
+$favorita->delete();
+
+return redirect()->back()->with('success', 'Canción eliminada de favoritas.');
+
+   
+}
+
+
 }

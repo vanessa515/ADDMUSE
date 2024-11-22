@@ -83,6 +83,7 @@
             </form>
 
 
+
             <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
             <hr>
         @endforeach
@@ -127,8 +128,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- 
-    // Mostrar mensajes de SweetAlert basados en la sesión -->
+<!--  Mostrar mensajes de SweetAlert basados en la sesión -->
     @if(session('success'))
     <script>
         Swal.fire({

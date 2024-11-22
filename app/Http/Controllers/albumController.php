@@ -71,28 +71,28 @@ public function showalbum()
             
         ->get();  
         $albumes = $albumes->groupBy('nombre_album');
-    // Obtener el perfil del usuario
+   
     $usuario = new usuario();
     $usuarios = $usuario->showperfil();
 
-    // Pasar los datos a la vista
+    
     return view('vistaAlbum', compact('albumes', 'usuarios'));
 }
 
 public function update(Request $request)
 {
     try {
-        // Validar los datos del formulario
+   
         $validatedData = $request->validate([
-            'pk_cancion' => 'required|exists:canciones,pk_cancion', // Verificar que el ID existe
+            'pk_cancion' => 'required|exists:canciones,pk_cancion', 
             'nombre' => 'required|string|max:45',
-            'imagen' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // La imagen es opcional
+            'imagen' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', 
             'pk_album' => 'required|exists:albumes,pk_album', 
             'nombre_album' => 'required|string|max:250',
             'imagen_album' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Buscar la canción específica por su clave primaria
+   
         $cancion = canciones::findOrFail($validatedData['pk_cancion']);
         $cancion->nombre = $validatedData['nombre'];
 
@@ -103,7 +103,7 @@ public function update(Request $request)
 
         $cancion->save();
 
-          // Actualizar álbum
+        
          $album = album::findOrFail($validatedData['pk_album']);
          $album->nombre_album = $validatedData['nombre_album'];
 
@@ -125,17 +125,15 @@ public function update(Request $request)
 
 public function delete(Request $request)
 {
-    // Validar que el 'pk_cancion' sea proporcionado
+   
     $validatedData = $request->validate([
         'pk_cancion' => 'required|exists:canciones,pk_cancion',
     ]);
 
-    // Encontrar la canción
     $cancion = canciones::findOrFail($validatedData['pk_cancion']);
 
-    // Verificar si el estatus es 1
     if ($cancion->estatus == 1) {
-        $cancion->estatus = 0; // Cambiar el estatus a 0
+        $cancion->estatus = 0; 
         $cancion->save();
 
     
@@ -150,5 +148,7 @@ public function delete(Request $request)
  return redirect()->back()->with('success', 'Canción eliminada correctamente.');
 
 }
-}
 
+
+
+}
