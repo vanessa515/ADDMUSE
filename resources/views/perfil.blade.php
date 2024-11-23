@@ -126,9 +126,8 @@
                     <div class="w-full flex mt-5">
                         <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata"></audio>
                     </div>
-                    
-                    <div class="border-b mt-7"></div>
                     @foreach($cancionesAlbum as $cancion)
+                    <div class="border-b mt-7"></div>
                       <div class="flex justify-between mt-4 items-center">
                         <span>
                           <div class="flex">
@@ -147,20 +146,22 @@
                         </div>
                       </div>
                   </div>
-                    <div class="border-b"></div>
-                    @endforeach
+                    <div class="border-b"></div>                   
                 </div>
+                    @endforeach
                 <!-- CARD 1 FIN -->
                 @endforeach
-            @else
+           
         <!-- Reproductor de música para este álbum -->
 
-        
+@else      
     <p>No hay canciones en la lista de favoritas.</p>
 @endif
+
         <!-- FIN DEL CONTENEDOR PADDING -->
     </div>
 </div>
+
 <!-- Modal para editar perfil -->
 <div id="editModal" class="modal">
     <div class="modal-content">
