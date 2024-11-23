@@ -17,7 +17,7 @@
 <input type="text" name="nombre_album" placeholder="nombre" required><br>
 
 <label for="">Imagen</label><br>
-<input type="file" name="imagen" placeholder="nombre" required><br>
+<input type="file" accept=".jpg,.jpeg,.png,.gif" name="imagen" placeholder="nombre" required><br>
 <select name="fk_categoria" id="fk_categoria" class="form-control" required><br>
         <option value="" disabled selected>Selecciona una opción</option>
         @foreach($categorias as $categoria)

@@ -61,11 +61,16 @@
 @if($albumes->isNotEmpty())
     @foreach($albumes as $nombre_album => $canciones)
         <h1 style="font-size: 20px">Del álbum: {{ $nombre_album }}</h1>
-
+        <form action="{{ route('album.EliminarAlb', ['id' => $canciones->first()->pk_album]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            
+            <button type="submit">Eliminar album</button> 
+            </form>
         @if($canciones->first()->imagen)
             <img style="max-width: 150px;" src="{{ asset('storage/' . $canciones->first()->imagen_album) }}" alt="imagen álbum"><br>
         @endif
-
+        
         <!-- Reproductor de música para este álbum -->
         <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
 
@@ -86,6 +91,7 @@
 
             <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
             <hr>
+           
         @endforeach
     @endforeach
 @else

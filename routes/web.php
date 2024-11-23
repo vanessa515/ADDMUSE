@@ -79,6 +79,8 @@ Route::get('/vistaAlbum', [albumController::class, 'showalbum'])->middleware('au
      Route::post('/vistaAlbum', [albumController::class, 'delete'])->name('cancion.delete');
 ///////////////////////////////////////////////////RUTA DESVINCULAR////////////////////////////////////////////////////////////////
      Route::put('/perfil/{id}', [perfilController::class,'desvincular'])->name('cancion.desvincular');
+
+     Route::put('/vistaAlbum/{id}', [albumController::class,'EliminarAlb'])->name('album.EliminarAlb');
  });
 
 Route::post('/favorita/store', [favoritaController::class, 'store'])->name('favorita.store');

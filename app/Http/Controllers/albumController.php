@@ -149,6 +149,22 @@ public function delete(Request $request)
 
 }
 
+public function EliminarAlb($id)
+{
 
+   $album = album::where('pk_album', $id)
+   ->where('fk_usuario', auth()->id())  
+   ->first();
+
+if (!$album) {
+return redirect()->back()->with('error', 'Album no encontrada.');
+}
+
+$album->delete();
+
+return redirect()->back()->with('success', 'Album eliminada de favoritas.');
+
+   
+}
 
 }

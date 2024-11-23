@@ -65,11 +65,11 @@ function obtenerDuracion() {
     <input type="text" id="nombre" name="nombre" placeholder="Nombre del archivo" required maxlength="45"><br>
 
     <label for="imagen">Imagen:</label>
-    <input type="file" name="imagen" placeholder="Imagen" required><br>
+    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="imagen" placeholder="Imagen" required><br>
 
     <!-- Campo de archivo para la música, que dispara el evento onchange -->
     <label for="musica">Música:</label>
-    <input type="file" id="musica" name="musica" placeholder="Música" required onchange="mostrarNombreArchivo(); obtenerDuracion();"><br>
+    <input type="file" accept=".mp3" id="musica" name="musica" placeholder="Música" required onchange="mostrarNombreArchivo(); obtenerDuracion();"><br>
 
     <!-- Campo de texto que mostrará la duración de la canción -->
     <label for="duracion">Duración:</label>
