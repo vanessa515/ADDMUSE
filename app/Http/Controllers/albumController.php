@@ -46,7 +46,7 @@ class albumController extends Controller
         $usuario=new usuario();
         $usuarios = $usuario->showperfil();
             //  dd($categorias);
-    return view('registroAlbum', compact('categorias')); // Pasamos los datos a la vista
+    return view('registroAlbum', compact('categorias','usuarios')); // Pasamos los datos a la vista
 }
 
 public function showalbum()

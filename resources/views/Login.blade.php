@@ -5,13 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="apple-touch-icon" href="{{ asset('icono.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 <body>
-   
+    <script src="{{ asset('/sw.js') }}"></script>
+<script>
+   if ("serviceWorker" in navigator) {
+      // Register a service worker hosted at the root of the
+      // site using the default scope.
+      navigator.serviceWorker.register("/sw.js").then(
+      (registration) => {
+         console.log("Service worker registration succeeded:", registration);
+      },
+      (error) => {
+         console.error(`Service worker registration failed: ${error}`);
+      },
+    );
+  } else {
+     console.error("Service workers are not supported.");
+  }
+</script>
 
-
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
+<div class="flex">
+    <div class="hidden  md:flex md:w-[40%]">
+        <div class="w-full h-full">
+            <img src="{{ asset('img/TRAV.jpg') }}" class="h-screen w-full" alt="">
+        </div>
+    </div>
+    <div class="md:w-[60%] md:shadow-lg w-[100%]">
+   <div class="flex justify-center items-center min-h-screen">
     <div class="flex flex-col w-[21rem]">
         <div class="flex justify-center">
             <div class="bg-red-400 opacity-85 blur-md rounded-full w-10 h-10 absolute"></div>
@@ -45,7 +69,7 @@
                     <input class="mt-[2px]" type="password" name="contraseña" placeholder="Contraseña" required>
                 </div>
                 <div class="mt-10 flex justify-center">
-                    <button class="border border-black p-2 hover:bg-[#007AB7] hover:text-[#FDFEFF] w-full" type="submit">Iniciar sesión</button>
+                    <button class="border-[2px] p-2 w-full hover:bg-black hover:text-white border-black" type="submit">Iniciar sesión</button>
                 </div>
                 <div class="text-center mt-4">
                     <h2>¿No tienes una cuenta?</h2>
@@ -54,6 +78,8 @@
             </form>
         </div>
     </div>
+   </div>
+</div>
 </div>
 
 <!-- Mostrar errores de validación -->

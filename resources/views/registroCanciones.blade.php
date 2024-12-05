@@ -55,48 +55,66 @@ function obtenerDuracion() {
 }
 
 </script>
+@include('sidebar')
 
-<h1>Registra canciones</h1>
+<div class="justify-center items-center min-h-screen flex flex-col">
+<h1 class="text-center text-3xl font-bold">Registra canciones</h1>
+<div class="flex flex-col w-[21rem] p-5 shadow-lg border-[2px] border-gray-50 mt-10">
+        <form action="{{ route('regcan.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf 
 
-<form action="{{ route('regcan.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf 
+            <!-- Campo de texto que mostrará el nombre del archivo de música -->
+           <div>
+            <label class="font-semibold" for="imagen">Nombre de la cancion</label>
+            <input class="w-full" type="text" id="nombre" name="nombre" placeholder="Nombre del archivo" required maxlength="45">
+           </div>
 
-    <!-- Campo de texto que mostrará el nombre del archivo de música -->
-    <input type="text" id="nombre" name="nombre" placeholder="Nombre del archivo" required maxlength="45"><br>
+            <div class="py-2">
+            <label class="font-semibold" for="imagen">Imagen de la cancion</label>
+            <input class="w-full" type="file" accept=".jpg,.jpeg,.png,.gif" name="imagen" placeholder="Imagen" required>
+            </div>
 
-    <label for="imagen">Imagen:</label>
-    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="imagen" placeholder="Imagen" required><br>
+            <!-- Campo de archivo para la música, que dispara el evento onchange -->
+            <div>
+            <label class="font-semibold" for="musica">Cancion</label>
+            <input class="w-full" type="file" accept=".mp3" id="musica" name="musica" placeholder="Música" required onchange="mostrarNombreArchivo(); obtenerDuracion();">
+            </div>
+            <!-- Campo de texto que mostrará la duración de la canción -->
+            <div class="py-2">
+            <label class="font-semibold" for="duracion">Duración de la cancion</label>
+            <input class="w-full" type="text" id="duracion" name="duracion" placeholder="Duración" readonly required>
 
-    <!-- Campo de archivo para la música, que dispara el evento onchange -->
-    <label for="musica">Música:</label>
-    <input type="file" accept=".mp3" id="musica" name="musica" placeholder="Música" required onchange="mostrarNombreArchivo(); obtenerDuracion();"><br>
+            </div>
+            <div>
+            <label class="font-semibold" for="fk_categoria">Genero musica</label>
+            <select class="w-full" name="fk_categoria" id="fk_categoria" class="form-control" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                @foreach($categorias as $categoria)
+                    <option value="{{ $categoria->pk_categorias }}">
+                        {{ $categoria->nombre_cat }} 
+                    </option>
+                @endforeach
+            </select>
+            </div>
 
-    <!-- Campo de texto que mostrará la duración de la canción -->
-    <label for="duracion">Duración:</label>
-    <input type="text" id="duracion" name="duracion" placeholder="Duración" readonly required><br>
+           <div class="py-2">
+                <label class="font-semibold" for="fk_album">Del album:</label>
+            <select class="w-full" name="fk_album" id="fk_album" class="form-control" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                @foreach($albumes as $album)
+                    <option value="{{ $album->pk_album }}">
+                        {{ $album->nombre_album }} 
+                    </option>
+                @endforeach
+            </select>
+           </div>
 
-    <label for="fk_categoria">Categoría:</label><br>
-    <select name="fk_categoria" id="fk_categoria" class="form-control" required>
-        <option value="" disabled selected>Selecciona una opción</option>
-        @foreach($categorias as $categoria)
-            <option value="{{ $categoria->pk_categorias }}">
-                {{ $categoria->nombre_cat }} 
-            </option>
-        @endforeach
-    </select>
-
-    <label for="fk_album">Albumes:</label><br>
-    <select name="fk_album" id="fk_album" class="form-control" required>
-        <option value="" disabled selected>Selecciona una opción</option>
-        @foreach($albumes as $album)
-            <option value="{{ $album->pk_album }}">
-                {{ $album->nombre_album }} 
-            </option>
-        @endforeach
-    </select>
-
-    <button type="submit">Registrar Canción</button>
-</form>
+            <div class="mt-5">
+            <button class="border-[2px] p-2 w-full hover:bg-black hover:text-white border-black" type="submit">Registrar Canción</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 

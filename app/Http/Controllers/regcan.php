@@ -69,7 +69,9 @@ class regcan extends Controller
             ->select('pk_album', 'nombre_album', 'imagen')
             ->where('fk_usuario', Auth::id())
             ->get();
-        return view('registroCanciones', compact('categorias', 'albumes')); // Pasamos los datos a la vista
+            $usuario=new usuario();
+            $usuarios = $usuario->showperfil();
+        return view('registroCanciones', compact('categorias', 'albumes', 'usuarios')); // Pasamos los datos a la vista
     }
 
     public function showcan(Request $request)

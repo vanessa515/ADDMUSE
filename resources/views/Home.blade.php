@@ -4,31 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="apple-touch-icon" href="{{ asset('icono.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <title>Página Principal</title>
+<style>
+    /* Estilo básico del modal */
+    .modal {
+        display: none; 
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+    }
 
-    <style>
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0, 0, 0, 0.4); 
-        }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 90%; /* Ancho predeterminado para pantallas pequeñas */
+        max-width: 600px; /* Máximo ancho para pantallas más grandes */
+        border-radius: 8px; /* Bordes redondeados para un diseño más moderno */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Media query para pantallas más grandes */
+    @media (min-width: 768px) {
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; 
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; 
+            width: 50%; /* Ajustar ancho en pantallas medianas */
         }
-        .hidden {
-            display: none;
+    }
+
+    @media (min-width: 1024px) {
+        .modal-content {
+            width: 40%; /* Ajustar ancho en pantallas grandes */
         }
-    </style>
+    }
+</style>
+    <script src="{{ asset('/sw.js') }}"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('Service Worker registrado con éxito:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Error al registrar el Service Worker:', error);
+        });
+    });
+  } else {
+    console.log('El navegador no soporta Service Workers.');
+  }
+</script>
 </head>
 <body>
 
@@ -40,12 +87,7 @@
 </form>
 <br><br>
 
-<h1>Música</h1>
-
-
-
-<center>
-<div class="md:flex hidden mr-[2rem]">
+<div class="flex mt-10 md:mt-0 justify-center px-10">
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -53,63 +95,113 @@
             </svg>
         </div>
         <form  action="" method="" >
-            <input type="search" class="block w-[20rem] p-4 ps-10 text-sm border border-black bg-gray-50 focus:ring-blue-500 focus:border-blue-500"id="buscarCancion" placeholder="Buscar canción..." oninput="filtrarCanciones()"  required />
+            <input type="search" class="block w-[20rem] md:w-[30rem] p-4 ps-10 text-sm border border-black bg-gray-50 focus:ring-blue-500 focus:border-blue-500"id="buscarCancion" placeholder="Buscar canción..." oninput="filtrarCanciones()"  required />
         </form>
     </div>
 </div>
-</center>
 
 <!-- Mostrar canciones recomendadas (limitadas por álbum) solo si hay canciones -->
+<div class="p-4">
+         <div class="p-4">
+         <h1 class="font-semibold">Encuentra tu musica favorita!!!</h1>
+            <!-- CONTENEDOR DE CARDS -->
+              <div class="md:ml-[12rem] p-14 grid-cols-1 md:grid-cols-3 grid md:flex-row gap-10">      
 @foreach($canciones as $nombreAlbum => $cancionesAlbum)
     @if($cancionesAlbum->isNotEmpty())
-        <a href="{{ route('albumselect.showcanalb', ['id' => $cancionesAlbum->first()->fk_album]) }}">
-            <h1 style="font-size: 20px">Del álbum: {{ $nombreAlbum }}</h1>
-        </a>
-        @if($cancionesAlbum->first()->imagen)
-            <img style="max-width: 150px;" src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen album"><br>
-        @endif
-
-        <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata" style="width: 30%;"></audio>
-
-        @foreach($cancionesAlbum as $cancion)
-            <div class="cancion-item">
-                <strong>{{ $cancion->nombre }}</strong><br>
-                <button onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">Reproducir</button><br>
-                <p>{{ $cancion->fecha }}</p>
-                <button onclick="openModal('{{ $cancion->pk_cancion }}')">Agregar a Favoritas</button>
-                <hr>
-            </div>
-        @endforeach
+                <!-- CARD 1 -->
+                <div class="md:w-[18rem] border shadow-lg mb-10">
+                  <div class="p-5">
+                    <a href="{{ route('albumselect.showcanalb', ['id' => $cancionesAlbum->first()->fk_album]) }}" class="flex justify-end hover:text-sky-500">
+                      <span>Ver Album</span>
+                    </a>
+                    <div class="mt-2 P-2">
+                        @if($cancionesAlbum->first()->imagen)
+                            <img src="{{ asset('storage/' . $cancionesAlbum->first()->imagen) }}" alt="imagen álbum">
+                        @endif
+                    </div>
+                    <div class="text-center mt-4">
+                      <span class="text">{{ $nombreAlbum }}</span>
+                    </div>
+                    <!-- <div class="mt-1 text-center">
+                      <span>Aqui va el nombre del artista</span>
+                    </div> -->
+                    <div class="w-full flex mt-5">
+                        <audio id="reproductor-{{ $loop->index }}" controls loop preload="metadata"></audio>
+                    </div>
+                @foreach($cancionesAlbum as $cancion) 
+                    <div class="border-b mt-7"></div>
+                    
+                      <div class="flex justify-between mt-4 items-center">
+                        <span>
+                          <div class="flex justify-between items-center">
+                            <!-- Aqui va el numero de posicion de la cancion -->
+                            <!-- <span>1</span> -->
+                            <div class="px-2">
+                                       <strong>{{ $cancion->nombre }}</strong>
+                            </div>
+                            <div>
+                                    <div>
+                                        <button class="hover:text-[#007AB7] text- justify-end flex"s onclick="openModal('{{ $cancion->pk_cancion }}')">
+                                            <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                            </div>
+                          </div>                       
+                        </span>
+                        <div>
+                        <button class="hover:text-[#007AB7] justify-end flex" onclick="cambiarCancion('reproductor-{{ $loop->parent->index }}', '{{ asset('storage/' . $cancion->musica) }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm14.024-.983a1.125 1.125 0 0 1 0 1.966l-5.603 3.113A1.125 1.125 0 0 1 9 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113Z" clip-rule="evenodd" />
+                                </svg>
+                        </button> 
+                        </div>
+                          
+                      </div>
+                      @endforeach
+                  </div>
+                    <div class="border-b"></div>
+                </div>
+                <!-- CARD 1 FIN -->
     @endif
 @endforeach
-
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div id="albumModal" class="modal">
     <div class="modal-content">
-        <span onclick="closeModal()" style="cursor:pointer;">&times; Cerrar</span>
-        <h2>Añadir a favoritos u otro album</h2>
-        <form id="favoritaForm" action="{{ route('favorita.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="fk_cancion" id="fk_cancion">
-            <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}"> 
-            <label for="fk_album">Álbum:</label>
-            <select name="fk_album" id="fk_album" required>
-                @foreach($albumes as $album)
-                    <option value="{{ $album->pk_album }}">{{ $album->nombre_album }}</option>
-                @endforeach
-            </select>
-            <br>
-            <button type="submit">Agregar a Favoritas</button>
-        </form>
+        <span onclick="closeModal()" class="close">&times;</span>
+             <h2 class="text-center text-3xl font-bold">Agrega esta cancion a tus favoritos</h2>
+         <div class="justify-center items-center flex flex-col">
+            <div class="mt-10 flex flex-col w-[21rem] p-5">
+
+                <form id="favoritaForm" action="{{ route('favorita.store') }}" method="POST">
+                    @csrf
+                   <div>
+                        <input type="hidden" name="fk_cancion" id="fk_cancion">
+                   </div>
+                    <div>
+                        <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}"> 
+                    </div>
+                   <div class="py-2">
+                    <label class="font-semibold" for="fk_album">Álbum al que quieres agregarlo</label>
+                    <select class="w-full" name="fk_album" id="fk_album" required>
+                        @foreach($albumes as $album)
+                            <option value="{{ $album->pk_album }}">{{ $album->nombre_album }}</option>
+                        @endforeach
+                    </select>
+                   </div>
+                    <div class="mt-5">
+                        <button class="border-[2px] p-2 w-full hover:bg-black hover:text-white border-black" type="submit">Agregar a Favoritas</button>
+                   </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-
-<a href="registrocat">Registrar categoría</a><br>
-<a href="registrocan">Registrar canciones</a><br>
-<a href="registroAlbum">Registrar Álbum</a><br>
-<a href="albumselect">album seleccionado</a>
-
 <script>
     function cambiarCancion(reproductorId, urlMusica) {
         const reproductor = document.getElementById(reproductorId);
@@ -182,7 +274,6 @@
     </script>
 @endif
 
-@include('fotter')
 
 </body>
 </html>

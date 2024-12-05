@@ -1,55 +1,194 @@
-body{
-
+/* Estilos generales */
+body {
+    font-family: 'Avenir', sans-serif;
 }
-.custom-audio-player {
-    display: flex;
-    align-items: center;
+
+/* Clases principales */
+.pics {
+    width: 580px;
+    height: 852px;
+    margin-left: 380px;
+    transition: all 0.3s ease;
+}
+
+.pics2 {
+    width: 258px;
+    height: 158px;
+    margin-left: 1000px;
+    position: relative;
+    top: -680px;
+    transition: all 0.3s ease;
+}
+
+.pic3 {
+    width: 39%;
+    height: 50%;
+    margin-left: 100px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.pic4 {
+    width: 20%;
+    height: 20%;
+    margin-left: 65%;
+    transition: all 0.3s ease;
+}
+
+/* Texto */
+.txt1 {
+    font-size: 23px;
+    position: absolute;
+    top: 55%;
+    left: 19%;
+    transform: translate(-50%, -50%);
+}
+
+.txt2 {
+    font-size: 79px;
+    font-weight: 700;
+    position: absolute;
+    top: 75%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    line-height: 0.9;
+    font-family: 'Questrial', sans-serif;
+}
+
+.txt3 {
+    font-size: 49px;
+    font-weight: 900;
+    position: absolute;
+    top: 55%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    text-align: left;
+    line-height: 0.9;
+    letter-spacing: 0px;
+    font-family: 'Questrial', sans-serif;
+}
+
+/* Botón */
+.btnexp {
+    position: relative;
+    top: -355px;
+    left: 19%;
+    transform: translateX(-50%);
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    outline: none;
+    border-radius: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btnexp:hover {
     background-color: black;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.play-pause {
-    margin-right: 10px;
-    color: white; /* Mejora la visibilidad del texto */
-}
-.seek-bar {
--webkit-appearance: none; /* Elimina el estilo predeterminado en navegadores WebKit */
-width: 100%; /* Ocupa el 100% del espacio disponible */
-height: 5px; /* Altura de la barra */
-background: red; /* Color de fondo de la barra (no reproducida) */
-border-radius: 5px; /* Bordes redondeados */
-position: relative; /* Necesario para el pseudo-elemento */
-overflow: hidden; /* Oculta el contenido que sobresale */
-}
-
-.seek-bar::-webkit-slider-thumb {
--webkit-appearance: none; /* Elimina el estilo predeterminado en WebKit */
-appearance: none; /* Elimina el estilo predeterminado en otros navegadores */
-width: 15px; /* Ancho del "thumb" (el círculo que arrastras) */
-height: 15px; /* Altura del "thumb" */
-background: green; /* Color del "thumb" */
-}
-
-
-
-/* Pseudo-elemento para mostrar la parte verde (reproducida) */
-.seek-bar::before {
-content: '';
-display: block;
-height: 100%;
-background: green; /* Color de la parte reproducida */
-position: absolute;
-top: 0;
-left: 0;
-width: 0; /* Inicialmente en 0 */
-transition: width 0.1s; /* Suaviza el cambio de ancho */
-z-index: -1; /* Asegúrate de que se dibuje detrás del "thumb" */
-}
-
-/* Estilo para el texto del tiempo */
-.current-time {
     color: white;
-    margin-left: 10px;
+}
+
+/* Imagen con zoom */
+#zoom-scroll {
+    transition: transform 0.5s ease;
+    transform: scale(1);
+    max-width: 39%;
+}
+
+/* Div para texto */
+.p2 {
+    left: 50%;
+    text-align: justify !important;
+}
+
+.divp2 {
+    margin-left: 55%;
+    margin-top: -25%;
+    margin-right: 15%;
+    text-align: justify !important;
+    line-height: 1.2;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .pics {
+        width: 90%;
+        margin-left: 5%;
+        height: auto; /* Ajuste automático de altura */
+    }
+
+    .pics2 {
+        width: 70%;
+        margin-left: 15%;
+        top: -300px; /* Ajusta la posición */
+    }
+
+    .txt1 {
+        font-size: 18px;
+        top: 50%;
+        left: 50%;
+    }
+
+    .txt2 {
+        font-size: 40px;
+        top: 70%;
+        left: 50%;
+    }
+
+    .btnexp {
+        top: -220px;
+        left: 50%;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .divp2 {
+        margin-left: 5%;
+        margin-right: 5%;
+        line-height: 1.4;
+    }
+    .pic3{
+        display: none;
+    }
+    .txt3{
+        display: none;
+    }
+    .p2{
+       margin-top: 20%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .pics {
+        width: 580px;
+        height: 852px;
+        margin-left: 380px;
+    }
+
+    .pics2 {
+        width: 258px;
+        height: 158px;
+        margin-left: 1000px;
+        top: -680px;
+    }
+
+    .txt1 {
+        font-size: 23px;
+    }
+
+    .txt2 {
+        font-size: 79px;
+    }
+
+    .btnexp {
+        font-size: 16px;
+    }
+
+    .divp2 {
+        margin-left: 55%;
+        margin-right: 15%;
+    }
 }
